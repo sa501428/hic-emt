@@ -35,7 +35,7 @@ import slice.clt.MixerCLT;
  * @author Muhammad Shamim
  * @since 1/20/2015
  */
-public class MixerTools {
+public class Tools {
 
     public static void main(String[] argv) throws CmdLineParser.UnknownOptionException, CmdLineParser.IllegalOptionValueException {
 
@@ -51,7 +51,7 @@ public class MixerTools {
 
         help = parser.getHelpOption();
         version = parser.getVersionOption();
-        MixerGlobals.printVerboseComments = MixerGlobals.printVerboseComments || parser.getVerboseOption();
+        Globals.printVerboseComments = Globals.printVerboseComments || parser.getVerboseOption();
 
         String[] args = parser.getRemainingArgs();
 
@@ -65,7 +65,7 @@ public class MixerTools {
         }
         if (instanceOfCLT != null) {
             if (version) {
-                System.out.println("Mixer tools version " + MixerGlobals.versionNum);
+                System.out.println("Mixer tools version " + Globals.versionNum);
             }
             if (args.length == 1 || help) {
                 instanceOfCLT.printUsageAndExit(1);

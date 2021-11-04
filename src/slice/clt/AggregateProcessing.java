@@ -25,7 +25,7 @@
 package slice.clt;
 
 
-import slice.MixerTools;
+import slice.Tools;
 
 /**
  * Created for testing multiple CLTs at once
@@ -80,7 +80,7 @@ public class AggregateProcessing {
                             folder + "_"
                     };
                     System.out.println("-----------------------------------------------------");
-                    MixerTools.main(strings);
+                    Tools.main(strings);
                     System.gc();
                 }
             }

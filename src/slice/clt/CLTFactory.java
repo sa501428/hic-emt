@@ -24,7 +24,7 @@
 
 package slice.clt;
 
-import slice.MixerGlobals;
+import slice.Globals;
 
 
 /**
@@ -36,7 +36,7 @@ import slice.MixerGlobals;
 public class CLTFactory {
 
     public static void generalUsage() {
-        System.out.println("Mixer Tools Version " + MixerGlobals.versionNum);
+        System.out.println("Mixer Tools Version " + Globals.versionNum);
         System.out.println("Usage:");
         System.out.println("\t" + "-h, --help print help");
         System.out.println("\t" + "-v, --verbose verbose mode");
@@ -49,7 +49,7 @@ public class CLTFactory {
 
         cmd = cmd.toLowerCase();
         if (cmd.startsWith("slice")) {
-            return new Slice();
+            return null;
         }
         return null;
     }

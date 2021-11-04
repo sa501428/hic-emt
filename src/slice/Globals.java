@@ -28,7 +28,7 @@ package slice;
  * @author Muhammad Shamim
  * @since 11/25/14
  */
-public class MixerGlobals {
+public class Globals {
     public static final String versionNum = "4.03.02";
     public static final int bufferSize = 2097152;
     public static boolean printVerboseComments = false;
