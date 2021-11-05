@@ -25,7 +25,7 @@
 package slice.clt;
 
 
-import slice.Tools;
+import stitch.Stitcher;
 
 /**
  * Created for testing multiple CLTs at once
@@ -36,56 +36,65 @@ public class AggregateProcessing {
 
     public static void main(String[] argv) throws Exception {
 
+
+        String server = "https://s3.wasabisys.com/hicfiles/internal/a6b4caff-d7a7-4dff-a341-ef61b5dd39f7/";
         String[] files = new String[]{
-                //"/Users/mshamim/Desktop/hicfiles/gm12878_rh14_30.hic" //
+                server + "GM_Intact_18B_mapq0/inter.hic",
+                server + "GM_Intact_18B_mapq30/inter_30.hic",
+                server + "HCT116_6.5B_mapq0/inter.hic",
+                server + "HCT116_6.5B_mapq30/inter_30.hic",
+                server + "HCT116_RAD21_DEGRON_mapq0/inter.hic",
+                server + "HCT116_RAD21_DEGRON_mapq30/inter_30.hic",
+                server + "K562_5B_mapq0/inter.hic",
+                server + "K562_5B_mapq30/inter_30.hic",
+                server + "Ultima_2.5B_mapq0/inter.hic",
+                server + "Ultima_2.5B_mapq30/inter_30.hic",
+                server + "Ultima_8B_mapq0/inter.hic",
+                server + "Ultima_8B_mapq30/inter_30.hic"
         };
-
-        files = new String[]{
-                "/Users/mshamim/Desktop/hicfiles/SCALE/hap1_SCALE_30.hic",
-                "/Users/mshamim/Desktop/hicfiles/SCALE/imr90_rh14_SCALE_30.hic",
-                "/Users/mshamim/Desktop/hicfiles/SCALE/K562_2014_SCALE_30.hic",
-                "/Users/mshamim/Desktop/hicfiles/gm12878_rh14_30.hic"
-        };
-
         String[] stems = new String[]{
-                "hap1",
-                "imr",
-                "k562",
-                "gm"
+                "GM18B_1",
+                "GM18B_30",
+                "HCT116_1",
+                "HCT116_30",
+                "RAD21_1",
+                "RAD21_30",
+                "K562_1",
+                "K562_30",
+                "U2B_1",
+                "U2B_30",
+                "U8B_1",
+                "U8B_30"
+        };
+        String[] regions = new String[]{
+                "1:100000000:110005000",
+                "2:115000000:125000000",
+                "3:80010000:90005000",
+                "5:9900000:29900000",
+                "8:60000000:80000000",
+                "17:10000000:15000000"
         };
 
-        files = new String[]{
-                "/Users/mshamim/Desktop/subsampling_experiment/primary_15.hic",
-                "/Users/mshamim/Desktop/subsampling_experiment/primary_29.hic",
-                "/Users/mshamim/Desktop/subsampling_experiment/primary_43.hic",
-                "/Users/mshamim/Desktop/subsampling_experiment/primary_58.hic",
-                "/Users/mshamim/Desktop/hicfiles/GM12878_primary14_30.hic",
-                "/Users/mshamim/Desktop/hicfiles/gm12878_rh14_30.hic"
-        };
+        int resolution = 500;
+        String normalization = "SCALE";
+        boolean adjustOrigin = false;
 
-        stems = new String[]{"p15", "p29", "p43", "p58", "primary", "gmMega"};
+        ;
+
+        Stitcher stitcher = new Stitcher(files, stems, regions, normalization, adjustOrigin, resolution);
+        stitcher.buildTempFiles();
 
 
-        int id = 810;
-        {
 
-            for (int f = 0; f < files.length; f++) {// files.length
-                String file = files[f];
-                String stem = stems[f];
-                for (int res : new int[]{100}) { //  ,100000,   50000,25000,10000 100000 100000 50000
-                    String folder = stem + "_SLICE_" + id;
-                    String[] strings = new String[]{"slice", "-r", res + "000",
-                            file, "2,7,4",
-                            "/Users/mshamim/Desktop/reSLICE/phnx_" + id + "_z4_" + res + "000_" + folder,
-                            folder + "_"
-                    };
-                    System.out.println("-----------------------------------------------------");
-                    Tools.main(strings);
-                    System.gc();
-                }
-            }
 
-            System.gc();
-        }
+        /*
+        String[] line = {"pre",
+                            newShortMND,
+                            "custom.hic",
+                            newChromSizes};
+                    HiCTools.main(line);
+         */
+
+
     }
 }

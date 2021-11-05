@@ -45,7 +45,7 @@ public class CLTFactory {
         System.out.println("Type mixer_tools <commandName> for more detailed usage instructions");
     }
 
-    public static MixerCLT getCLTCommand(String cmd) {
+    public static CLT getCLTCommand(String cmd) {
 
         cmd = cmd.toLowerCase();
         if (cmd.startsWith("slice")) {

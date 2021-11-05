@@ -25,9 +25,9 @@
 package slice;
 
 import jargs.gnu.CmdLineParser;
+import slice.clt.CLT;
 import slice.clt.CLTFactory;
-import slice.clt.CommandLineParserForMixer;
-import slice.clt.MixerCLT;
+import slice.clt.CommandLineParserForStitch;
 
 /**
  * Command line tool handling through factory model
@@ -44,7 +44,7 @@ public class Tools {
             System.exit(0);
         }
 
-        CommandLineParserForMixer parser = new CommandLineParserForMixer();
+        CommandLineParserForStitch parser = new CommandLineParserForStitch();
         boolean help;
         boolean version;
         parser.parse(argv);
@@ -55,7 +55,7 @@ public class Tools {
 
         String[] args = parser.getRemainingArgs();
 
-        MixerCLT instanceOfCLT;
+        CLT instanceOfCLT;
         String cmd = "";
         if (args.length == 0) {
             instanceOfCLT = null;
