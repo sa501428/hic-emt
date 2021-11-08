@@ -46,14 +46,14 @@ public abstract class CLT {
         setUsage(usage);
     }
 
-    public void readArguments(String[] args, CommandLineParserForStitch parser) {
+    public void readArguments(String[] args, CommandLineParser parser) {
         assessIfChromosomesHaveBeenSpecified(parser);
         readMixerArguments(args, parser);
     }
 
-    protected abstract void readMixerArguments(String[] args, CommandLineParserForStitch mixerParser);
+    protected abstract void readMixerArguments(String[] args, CommandLineParser mixerParser);
 
-    private void assessIfChromosomesHaveBeenSpecified(CommandLineParserForStitch mixerParser) {
+    private void assessIfChromosomesHaveBeenSpecified(CommandLineParser mixerParser) {
         List<String> possibleChromosomes = mixerParser.getChromosomeListOption();
         if (possibleChromosomes != null && possibleChromosomes.size() > 0) {
             givenChromosomes = new ArrayList<>(possibleChromosomes);

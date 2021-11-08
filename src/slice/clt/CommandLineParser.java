@@ -25,6 +25,8 @@
 package slice.clt;
 
 import jargs.gnu.CmdLineParser;
+import javastraw.reader.type.NormalizationHandler;
+import javastraw.reader.type.NormalizationType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,22 +37,28 @@ import java.util.List;
  *
  * @author Muhammad Shamim
  */
-public class CommandLineParserForStitch extends CmdLineParser {
+public class CommandLineParser extends CmdLineParser {
 
     private final Option verboseOption = addBooleanOption('v', "verbose");
     private final Option helpOption = addBooleanOption('h', "help");
     private final Option versionOption = addBooleanOption('V', "version");
+    private final Option resetOriginOption = addBooleanOption("reset-origin");
     private final Option multipleChromosomesOption = addStringOption('c', "chromosomes");
-    private final Option multipleResolutionsOption = addStringOption('r', "resolutions");
+    private final Option multipleResolutionsOption = addStringOption('r', "resolution(s)");
     private final Option threadNumOption = addIntegerOption('z', "threads");
     private final Option subsampleNumOption = addIntegerOption("subsample");
     private final Option randomSeedsOption = addStringOption("random-seeds");
+    private final Option normalizationTypeOption = addStringOption('k', "normalization");
 
-    public CommandLineParserForStitch() {
+    public CommandLineParser() {
     }
 
     public int getSubsamplingOption() {
         return optionToInt(subsampleNumOption);
+    }
+
+    public boolean getResetOrigin() {
+        return optionToBoolean(resetOriginOption);
     }
 
     /**
@@ -62,6 +70,14 @@ public class CommandLineParserForStitch extends CmdLineParser {
 
     public List<Integer> getMultipleResolutionOptions() {
         return optionToIntegerList(multipleResolutionsOption);
+    }
+
+    public Integer getResolutionOption() {
+        List<Integer> resolutions = getMultipleResolutionOptions();
+        if (resolutions != null && resolutions.size() > 0) {
+            return resolutions.get(0);
+        }
+        return null;
     }
 
     public long[] getMultipleSeedsOption() {
@@ -122,5 +138,37 @@ public class CommandLineParserForStitch extends CmdLineParser {
             intList.add(Integer.parseInt(temp));
         }
         return intList;
+    }
+
+    /**
+     * String flags
+     */
+    public NormalizationType getNormalizationTypeOption(NormalizationHandler normalizationHandler) {
+        return retrieveNormalization(optionToString(normalizationTypeOption), normalizationHandler);
+    }
+
+    public String getNormalizationStringOption() {
+        return optionToString(normalizationTypeOption);
+    }
+
+    /**
+     * String flags
+     */
+    private String optionToString(Option option) {
+        Object opt = getOptionValue(option);
+        return opt == null ? null : opt.toString();
+    }
+
+    private NormalizationType retrieveNormalization(String norm, NormalizationHandler normalizationHandler) {
+        if (norm == null || norm.length() < 1)
+            return null;
+
+        try {
+            return normalizationHandler.getNormTypeFromString(norm);
+        } catch (IllegalArgumentException error) {
+            System.err.println("Normalization must be one of \"NONE\", \"VC\", \"VC_SQRT\", \"KR\", or \"SCALE\".");
+            System.exit(7);
+        }
+        return null;
     }
 }

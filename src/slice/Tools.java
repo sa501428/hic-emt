@@ -27,7 +27,7 @@ package slice;
 import jargs.gnu.CmdLineParser;
 import slice.clt.CLT;
 import slice.clt.CLTFactory;
-import slice.clt.CommandLineParserForStitch;
+import slice.clt.CommandLineParser;
 
 /**
  * Command line tool handling through factory model
@@ -44,7 +44,7 @@ public class Tools {
             System.exit(0);
         }
 
-        CommandLineParserForStitch parser = new CommandLineParserForStitch();
+        CommandLineParser parser = new CommandLineParser();
         boolean help;
         boolean version;
         parser.parse(argv);
