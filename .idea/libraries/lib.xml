@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jargs.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-straw-1.4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/juicer_tools_2.13.06.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
