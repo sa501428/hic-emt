@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/stitch-hic.iml" filepath="$PROJECT_DIR$/stitch-hic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hic-emt.iml" filepath="$PROJECT_DIR$/hic-emt.iml" />
     </modules>
   </component>
 </project>

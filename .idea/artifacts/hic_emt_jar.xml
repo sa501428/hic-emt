@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="hic-emt:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/hic_emt</output-path>
+    <root id="archive" name="hic_emt.jar">
+      <element id="module-output" name="hic-emt" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/jargs.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/java-straw-1.4.1.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/lib/juicer_tools_2.13.06.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
