@@ -39,13 +39,13 @@ import emt.clt.tools.Stitch;
 public class CLTFactory {
 
     public static void generalUsage() {
-        System.out.println("Mixer Tools Version " + Globals.versionNum);
+        System.out.println("Hi-C EMT Version " + Globals.versionNum);
         System.out.println("Usage:");
         System.out.println("\t" + "-h, --help print help");
         System.out.println("\t" + "-v, --verbose verbose mode");
         System.out.println("\t" + "-V, --version print version");
-        System.out.println("Tool(s): slice");
-        System.out.println("Type mixer_tools <commandName> for more detailed usage instructions");
+        System.out.println("Tools: excise, stitch");
+        System.out.println("Type hic_emt <tool_name> for more detailed usage instructions");
     }
 
     public static CLT getCLTCommand(String cmd) {

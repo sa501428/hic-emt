@@ -65,7 +65,7 @@ public class Tools {
         }
         if (instanceOfCLT != null) {
             if (version) {
-                System.out.println("Mixer tools version " + Globals.versionNum);
+                System.out.println("Hi-C EMT version " + Globals.versionNum);
             }
             if (args.length == 1 || help) {
                 instanceOfCLT.printUsageAndExit(1);

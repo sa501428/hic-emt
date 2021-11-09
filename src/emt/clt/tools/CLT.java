@@ -46,10 +46,10 @@ public abstract class CLT {
         readAdditionalArguments(args, parser);
     }
 
-    protected abstract void readAdditionalArguments(String[] args, CommandLineParser mixerParser);
+    protected abstract void readAdditionalArguments(String[] args, CommandLineParser parser);
 
-    private void assessIfChromosomesHaveBeenSpecified(CommandLineParser mixerParser) {
-        List<String> possibleChromosomes = mixerParser.getChromosomeListOption();
+    private void assessIfChromosomesHaveBeenSpecified(CommandLineParser parser) {
+        List<String> possibleChromosomes = parser.getChromosomeListOption();
         if (possibleChromosomes != null && possibleChromosomes.size() > 0) {
             givenChromosomes = new ArrayList<>(possibleChromosomes);
         }

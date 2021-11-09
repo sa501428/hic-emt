@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Command Line Parser for Mixer commands
+ * Command Line Parser for EMT commands
  *
  * @author Muhammad Shamim
  */

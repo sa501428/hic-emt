@@ -29,7 +29,6 @@ package emt;
  * @since 11/25/14
  */
 public class Globals {
-    public static final String versionNum = "0.06.00";
-    public static final int bufferSize = 2097152;
+    public static final String versionNum = "0.06.01";
     public static boolean printVerboseComments = false;
 }
