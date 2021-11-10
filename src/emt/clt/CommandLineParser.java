@@ -53,8 +53,8 @@ public class CommandLineParser extends CmdLineParser {
     public CommandLineParser() {
     }
 
-    public int getSubsamplingOption() {
-        return optionToInt(subsampleNumOption);
+    public long getSubsamplingOption() {
+        return optionToLong(subsampleNumOption);
     }
 
     public boolean getResetOrigin() {
@@ -118,6 +118,14 @@ public class CommandLineParser extends CmdLineParser {
     private int optionToInt(Option option) {
         Object opt = getOptionValue(option);
         return opt == null ? 0 : ((Number) opt).intValue();
+    }
+
+    /**
+     * long flags
+     */
+    private long optionToLong(Option option) {
+        Object opt = getOptionValue(option);
+        return opt == null ? 0 : ((Number) opt).longValue();
     }
 
     /**

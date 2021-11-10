@@ -39,7 +39,7 @@ public class Excision {
         norm = dataset.getNormalizationHandler().getNormTypeFromString("NONE");
     }
 
-    public void buildTempFiles() throws IOException {
+    public void buildTempFiles(boolean doSubsample, double ratio) throws IOException {
         if (useCustomCDS) {
             writeOutCustomCDS();
         }
@@ -48,14 +48,15 @@ public class Excision {
         Chromosome[] chromosomes = chromosomeHandler.getChromosomeArrayWithoutAllByAll();
         for (int i = 0; i < chromosomes.length; i++) {
             for (int j = i; j < chromosomes.length; j++) {
-                processRegion(bwMND, chromosomes[i], chromosomes[j]);
+                processRegion(bwMND, chromosomes[i], chromosomes[j], doSubsample, ratio);
                 Utils.printProgressDot();
             }
         }
         bwMND.close();
     }
 
-    private void processRegion(BufferedWriter bwMND, Chromosome c1, Chromosome c2) throws IOException {
+    private void processRegion(BufferedWriter bwMND, Chromosome c1, Chromosome c2,
+                               boolean doSubsample, double ratio) throws IOException {
 
         int end1 = (int) (c1.getLength() / highestResolution) + 1;
         int end2 = (int) (c2.getLength() / highestResolution) + 1;
@@ -63,12 +64,16 @@ public class Excision {
         Matrix matrix = dataset.getMatrix(c1, c2);
         MatrixZoomData zd = matrix.getZoomData(zoom);
 
-        List<Block> blocks = HiCFileTools.getAllRegionBlocks(zd,
-                0, end1, 0, end2,
+        List<Block> blocks = HiCFileTools.getAllRegionBlocks(zd, 0, end1, 0, end2,
                 norm, false);
 
-        Utils.writeOutMND(blocks, highestResolution, 0, 0, bwMND,
-                c1.getName(), c2.getName());
+        if(doSubsample){
+            Utils.writeOutSubsampledMND(blocks, highestResolution, 0, 0, bwMND,
+                    c1.getName(), c2.getName(), ratio);
+        } else {
+            Utils.writeOutMND(blocks, highestResolution, 0, 0, bwMND,
+                    c1.getName(), c2.getName());
+        }
     }
 
     public void buildNewHiCFile() throws CmdLineParser.UnknownOptionException, CmdLineParser.IllegalOptionValueException {

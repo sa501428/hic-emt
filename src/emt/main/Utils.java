@@ -6,10 +6,12 @@ import javastraw.reader.block.ContactRecord;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class Utils {
 
     private static int progressCounter = 0;
+    private static final Random generator = new Random(0);
 
     public static void printProgressDot() {
         if (++progressCounter % 10 == 0) {
@@ -47,5 +49,29 @@ public class Utils {
                 bwMND.newLine();
             }
         }
+    }
+
+    public static void writeOutSubsampledMND(List<Block> blocks, int resolution, int xOrigin, int yOrigin,
+                                   BufferedWriter bwMND, String xChrom, String yChrom, double ratio) throws IOException {
+        for (Block block : blocks) {
+            for (ContactRecord cr : block.getContactRecords()) {
+                if (Float.isNaN(cr.getCounts())) continue;
+                int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio);
+                int gx = (cr.getBinX() * resolution) - xOrigin;
+                int gy = (cr.getBinY() * resolution) - yOrigin;
+                bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
+                bwMND.newLine();
+            }
+        }
+    }
+
+    private static int getSubsampledNumberOfContacts(float counts, double ratio) {
+        int newCounts = 0;
+        for(int z = 0; z < counts; z++){
+            if(generator.nextFloat() < ratio){
+                newCounts++;
+            }
+        }
+        return newCounts;
     }
 }
