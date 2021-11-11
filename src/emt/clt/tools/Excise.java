@@ -3,6 +3,7 @@ package emt.clt.tools;
 import emt.clt.CommandLineParser;
 import emt.main.DatasetUtils;
 import emt.main.Excision;
+import emt.main.FileBuildingMethod;
 import javastraw.reader.Dataset;
 import javastraw.reader.basics.ChromosomeHandler;
 import javastraw.tools.HiCFileTools;
@@ -13,10 +14,12 @@ public class Excise extends CLT {
     private int highestResolution = 1000;
     private String file, folder;
     private long numberOfReadsToSubsample = 0L;
-    double ratioToKeep = 1.0;
+    private double ratioToKeep = 1.0;
+    private boolean doCleanUp = false;
 
     public Excise() {
-        super("excise [-r resolution] [-c chromosomes] <file> <out_folder>");
+        super("excise [-r resolution] [-c chromosomes] [--subsample num_contacts] " +
+                "[--cleanup] <file> <out_folder>");
     }
 
     @Override
@@ -37,6 +40,7 @@ public class Excise extends CLT {
         if(numReadsSubsample > 1){
             numberOfReadsToSubsample = numReadsSubsample;
         }
+        doCleanUp = parser.getCleanupOption();
     }
 
     @Override
@@ -49,19 +53,15 @@ public class Excise extends CLT {
         if (givenChromosomes != null)
             chromosomeHandler = HiCFileTools.stringToChromosomes(givenChromosomes, chromosomeHandler);
 
-        if(numberOfReadsToSubsample > 0){
+        if (numberOfReadsToSubsample > 0) {
             long numTotalContacts = DatasetUtils.getTotalContacts(ds);
             ratioToKeep = ((double) numberOfReadsToSubsample) / ((double) numTotalContacts);
-            System.out.println("Aiming to retain ~"+numberOfReadsToSubsample + "/" + numTotalContacts + " \n" +
-                    "Ratio: "+ratioToKeep);
+            System.out.println("Aiming to retain ~" + numberOfReadsToSubsample + "/" + numTotalContacts + " \n" +
+                    "Ratio: " + ratioToKeep);
         }
 
-        Excision excision = new Excision(ds, chromosomeHandler, highestResolution, folder);
-        try {
-            excision.buildTempFiles(numberOfReadsToSubsample > 1, ratioToKeep);
-            excision.buildNewHiCFile();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FileBuildingMethod excision = new Excision(ds, chromosomeHandler, highestResolution, folder,
+                numberOfReadsToSubsample > 1, ratioToKeep, doCleanUp);
+        FileBuildingMethod.tryToBuild(excision, false);
     }
 }

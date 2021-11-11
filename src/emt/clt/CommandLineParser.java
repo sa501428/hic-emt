@@ -42,6 +42,7 @@ public class CommandLineParser extends CmdLineParser {
     private final Option verboseOption = addBooleanOption('v', "verbose");
     private final Option helpOption = addBooleanOption('h', "help");
     private final Option versionOption = addBooleanOption('V', "version");
+    private final Option cleanUpOption = addBooleanOption("cleanup");
     private final Option resetOriginOption = addBooleanOption("reset-origin");
     private final Option multipleChromosomesOption = addStringOption('c', "chromosomes");
     private final Option multipleResolutionsOption = addStringOption('r', "resolution(s)");
@@ -110,6 +111,10 @@ public class CommandLineParser extends CmdLineParser {
 
     public boolean getVersionOption() {
         return optionToBoolean(versionOption);
+    }
+
+    public boolean getCleanupOption() {
+        return optionToBoolean(cleanUpOption);
     }
 
     /**

@@ -1,6 +1,7 @@
 package emt.clt.tools;
 
 import emt.clt.CommandLineParser;
+import emt.main.FileBuildingMethod;
 import emt.main.Stitcher;
 import javastraw.tools.UNIXTools;
 
@@ -10,10 +11,11 @@ public class Stitch extends CLT {
     private String norm = "SCALE", folder;
     private boolean adjustOrigin = false;
     private String[] files, stems, regions;
+    private boolean doCleanUp = false;
 
     public Stitch() {
         super("stitch [-r resolution] [-k NONE/VC/VC_SQRT/KR] [--reset-origin]" +
-                " <file1,file2,...> <name1,name2,...> <chr1:x1:y1,chr2:x2:y2,...> <out_folder>");
+                "[--cleanup] <file1,file2,...> <name1,name2,...> <chr1:x1:y1,chr2:x2:y2,...> <out_folder>");
     }
 
     @Override
@@ -42,18 +44,14 @@ public class Stitch extends CLT {
         }
 
         adjustOrigin = parser.getResetOrigin();
+        doCleanUp = parser.getCleanupOption();
     }
 
     @Override
     public void run() {
 
         UNIXTools.makeDir(folder);
-        Stitcher stitcher = new Stitcher(files, stems, regions, norm, adjustOrigin, resolution);
-        try {
-            stitcher.buildTempFiles(folder);
-            stitcher.buildNewHiCFile(folder);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        FileBuildingMethod stitcher = new Stitcher(files, stems, regions, norm, adjustOrigin, resolution, folder, doCleanUp);
+        FileBuildingMethod.tryToBuild(stitcher, true);
     }
 }

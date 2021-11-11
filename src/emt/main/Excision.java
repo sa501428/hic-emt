@@ -1,16 +1,13 @@
 package emt.main;
 
-import jargs.gnu.CmdLineParser;
 import javastraw.reader.Dataset;
 import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.basics.ChromosomeHandler;
 import javastraw.reader.block.Block;
 import javastraw.reader.mzd.MatrixZoomData;
-import javastraw.reader.type.HiCZoom;
 import javastraw.reader.type.NormalizationType;
 import javastraw.tools.HiCFileTools;
-import juicebox.tools.HiCTools;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -18,28 +15,27 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-public class Excision {
-    private final String newMND, newCDS, newHiCFile;
-    private final int highestResolution;
-    private final HiCZoom zoom;
+public class Excision extends FileBuildingMethod {
+
     private final Dataset dataset;
     private final ChromosomeHandler chromosomeHandler;
     private final boolean useCustomCDS;
     private final NormalizationType norm;
+    private final boolean doSubsample;
+    private final double ratio;
 
-    public Excision(Dataset dataset, ChromosomeHandler chromosomeHandler, int highestResolution, String folder) {
+    public Excision(Dataset dataset, ChromosomeHandler chromosomeHandler, int resolution, String path,
+                    boolean doSubsample, double ratio, boolean doCleanUp) {
+        super(resolution, path, dataset.getGenomeId(), doCleanUp);
         this.dataset = dataset;
         this.chromosomeHandler = chromosomeHandler;
-        this.highestResolution = highestResolution;
-        zoom = new HiCZoom(HiCZoom.HiCUnit.BP, highestResolution);
+        this.doSubsample = doSubsample;
+        this.ratio = ratio;
         useCustomCDS = !Utils.checkIfStandardGenome(dataset.getGenomeId());
-        newMND = folder + "/custom.mnd.txt";
-        newCDS = dataset.getGenomeId();
-        newHiCFile = folder + "/custom.hic";
         norm = dataset.getNormalizationHandler().getNormTypeFromString("NONE");
     }
 
-    public void buildTempFiles(boolean doSubsample, double ratio) throws IOException {
+    public void buildTempFiles() throws IOException {
         if (useCustomCDS) {
             writeOutCustomCDS();
         }
@@ -58,8 +54,8 @@ public class Excision {
     private void processRegion(BufferedWriter bwMND, Chromosome c1, Chromosome c2,
                                boolean doSubsample, double ratio) throws IOException {
 
-        int end1 = (int) (c1.getLength() / highestResolution) + 1;
-        int end2 = (int) (c2.getLength() / highestResolution) + 1;
+        int end1 = (int) (c1.getLength() / resolution) + 1;
+        int end2 = (int) (c2.getLength() / resolution) + 1;
 
         Matrix matrix = dataset.getMatrix(c1, c2);
         MatrixZoomData zd = matrix.getZoomData(zoom);
@@ -67,20 +63,13 @@ public class Excision {
         List<Block> blocks = HiCFileTools.getAllRegionBlocks(zd, 0, end1, 0, end2,
                 norm, false);
 
-        if(doSubsample){
-            Utils.writeOutSubsampledMND(blocks, highestResolution, 0, 0, bwMND,
+        if (doSubsample) {
+            Utils.writeOutSubsampledMND(blocks, resolution, 0, 0, bwMND,
                     c1.getName(), c2.getName(), ratio);
         } else {
-            Utils.writeOutMND(blocks, highestResolution, 0, 0, bwMND,
+            Utils.writeOutMND(blocks, resolution, 0, 0, bwMND,
                     c1.getName(), c2.getName());
         }
-    }
-
-    public void buildNewHiCFile() throws CmdLineParser.UnknownOptionException, CmdLineParser.IllegalOptionValueException {
-
-        String resolutionsToBuild = Utils.getResolutionsToBuild(highestResolution);
-        String[] line = {"pre", "-r", resolutionsToBuild, newMND, newHiCFile, newCDS};
-        HiCTools.main(line);
     }
 
     private void writeOutCustomCDS() throws IOException {

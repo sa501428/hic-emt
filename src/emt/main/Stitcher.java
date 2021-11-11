@@ -1,15 +1,12 @@
 package emt.main;
 
-import jargs.gnu.CmdLineParser;
 import javastraw.reader.Dataset;
 import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.block.Block;
 import javastraw.reader.mzd.MatrixZoomData;
-import javastraw.reader.type.HiCZoom;
 import javastraw.reader.type.NormalizationType;
 import javastraw.tools.HiCFileTools;
-import juicebox.tools.HiCTools;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -17,30 +14,26 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
 
-public class Stitcher {
+public class Stitcher extends FileBuildingMethod {
 
-    private String newChromSizes = "custom.chrom.sizes";
-    private String newMND = "custom.mnd.txt";
     private String[] files, stems, regions;
     private String normalization;
     private boolean adjustOrigin;
-    private int resolution;
-    private HiCZoom zoom;
+
 
     public Stitcher(String[] files, String[] stems, String[] regions,
-                    String normalization, boolean adjustOrigin, int resolution) {
+                    String normalization, boolean adjustOrigin, int resolution, String path, boolean doCleanUp) {
+        super(resolution, path, path + "/custom.chrom.sizes", doCleanUp);
         this.files = files;
         this.stems = stems;
         this.regions = regions;
         this.normalization = normalization;
         this.adjustOrigin = adjustOrigin;
-        this.resolution = resolution;
-        zoom = new HiCZoom(HiCZoom.HiCUnit.BP, resolution);
     }
 
-    public void buildTempFiles(String path) throws IOException {
-        BufferedWriter bwChromDotSizes = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path + "/" + newChromSizes)));
-        BufferedWriter bwMND = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(path + "/" + newMND)));
+    public void buildTempFiles() throws IOException {
+        BufferedWriter bwChromDotSizes = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newCDS)));
+        BufferedWriter bwMND = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newMND)));
         for (int s = 0; s < files.length; s++) {
             String file = files[s];
             String stem = stems[s];
@@ -89,14 +82,5 @@ public class Stitcher {
             Utils.writeOutMND(blocks, resolution, 0, 0, bwMND,
                     newChromName, newChromName);
         }
-    }
-
-    public void buildNewHiCFile(String path) throws CmdLineParser.UnknownOptionException, CmdLineParser.IllegalOptionValueException {
-
-        String resolutionsToBuild = Utils.getResolutionsToBuild(resolution);
-
-        String[] line = {"pre", "-d", "-n", "-r", resolutionsToBuild,
-                path + "/" + newMND, path + "/custom.hic", path + "/" + newChromSizes};
-        HiCTools.main(line);
     }
 }
