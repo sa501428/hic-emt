@@ -64,7 +64,7 @@ public class CommandLineParser extends CmdLineParser {
 
     private long optionToLong(Option option) {
         Object opt = getOptionValue(option);
-        return opt == null ? 0 : ((Number) opt).longValue();
+        return opt == null ? 0L : ((Number) opt).longValue();
     }
 
     private List<String> optionToStringList(Option option) {

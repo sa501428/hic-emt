@@ -7,7 +7,7 @@ import javastraw.tools.UNIXTools;
 
 public class Stitch extends CLT {
 
-    private int resolution = 500;
+    private int resolution = 1000;
     private String norm = "SCALE", folder;
     private boolean adjustOrigin = false;
     private String[] files, stems, regions;
@@ -15,7 +15,7 @@ public class Stitch extends CLT {
     private long seed;
 
     public Stitch() {
-        super("stitch [-r resolution] [-k NONE/VC/VC_SQRT/KR] [--reset-origin]" +
+        super("stitch [-r resolution] [-k NONE/VC/VC_SQRT/KR/SCALE] [--reset-origin]" +
                 "[--cleanup] <file1,file2,...> <name1,name2,...> <chr1:x1:y1,chr2:x2:y2,...> <out_folder>");
     }
 

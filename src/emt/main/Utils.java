@@ -11,7 +11,6 @@ import java.util.Random;
 public class Utils {
 
     private static int progressCounter = 0;
-    //private static final Random generator = new Random(0);
 
     public static void printProgressDot() {
         if (++progressCounter % 10 == 0) {
