@@ -46,96 +46,26 @@ public class CommandLineParser extends CmdLineParser {
     private final Option resetOriginOption = addBooleanOption("reset-origin");
     private final Option multipleChromosomesOption = addStringOption('c', "chromosomes");
     private final Option multipleResolutionsOption = addStringOption('r', "resolution(s)");
-    private final Option threadNumOption = addIntegerOption('z', "threads");
     private final Option subsampleNumOption = addIntegerOption("subsample");
-    private final Option randomSeedsOption = addStringOption("random-seeds");
+    private final Option randomSeedOption = addStringOption("seed");
     private final Option normalizationTypeOption = addStringOption('k', "normalization");
 
     public CommandLineParser() {
     }
 
-    public long getSubsamplingOption() {
-        return optionToLong(subsampleNumOption);
-    }
-
-    public boolean getResetOrigin() {
-        return optionToBoolean(resetOriginOption);
-    }
-
-    /**
-     * String Set flags
+    /*
+     * convert Options to Objects or Primitives
      */
-    public List<String> getChromosomeListOption() {
-        return optionToStringList(multipleChromosomesOption);
-    }
 
-    public List<Integer> getMultipleResolutionOptions() {
-        return optionToIntegerList(multipleResolutionsOption);
-    }
-
-    public Integer getResolutionOption() {
-        List<Integer> resolutions = getMultipleResolutionOptions();
-        if (resolutions != null && resolutions.size() > 0) {
-            return resolutions.get(0);
-        }
-        return null;
-    }
-
-    public long[] getMultipleSeedsOption() {
-        List<String> possibleSeeds = optionToStringList(randomSeedsOption);
-        if (possibleSeeds != null) {
-            long[] seeds = new long[possibleSeeds.size()];
-            for (int i = 0; i < seeds.length; i++) {
-                seeds[i] = Long.parseLong(possibleSeeds.get(i));
-            }
-            return seeds;
-        }
-        return null;
-    }
-
-    /**
-     * boolean flags
-     */
     private boolean optionToBoolean(Option option) {
         Object opt = getOptionValue(option);
         return opt != null && (Boolean) opt;
     }
 
-    public boolean getHelpOption() {
-        return optionToBoolean(helpOption);
-    }
-
-    public boolean getVerboseOption() {
-        return optionToBoolean(verboseOption);
-    }
-
-    public boolean getVersionOption() {
-        return optionToBoolean(versionOption);
-    }
-
-    public boolean getCleanupOption() {
-        return optionToBoolean(cleanUpOption);
-    }
-
-    /**
-     * int flags
-     */
-    private int optionToInt(Option option) {
-        Object opt = getOptionValue(option);
-        return opt == null ? 0 : ((Number) opt).intValue();
-    }
-
-    /**
-     * long flags
-     */
     private long optionToLong(Option option) {
         Object opt = getOptionValue(option);
         return opt == null ? 0 : ((Number) opt).longValue();
     }
-
-    /**
-     * double flags
-     */
 
     private List<String> optionToStringList(Option option) {
         Object opt = getOptionValue(option);
@@ -153,23 +83,65 @@ public class CommandLineParser extends CmdLineParser {
         return intList;
     }
 
-    /**
-     * String flags
+    private String optionToString(Option option) {
+        Object opt = getOptionValue(option);
+        return opt == null ? null : opt.toString();
+    }
+
+    /*
+     * Actual parameters
      */
-    public NormalizationType getNormalizationTypeOption(NormalizationHandler normalizationHandler) {
-        return retrieveNormalization(optionToString(normalizationTypeOption), normalizationHandler);
+
+    public boolean getHelpOption() {
+        return optionToBoolean(helpOption);
+    }
+
+    public boolean getVerboseOption() {
+        return optionToBoolean(verboseOption);
+    }
+
+    public boolean getVersionOption() {
+        return optionToBoolean(versionOption);
+    }
+
+    public boolean getCleanupOption() {
+        return optionToBoolean(cleanUpOption);
+    }
+
+    public boolean getResetOrigin() {
+        return optionToBoolean(resetOriginOption);
+    }
+
+    public long getSubsamplingOption() {
+        return optionToLong(subsampleNumOption);
+    }
+
+    public long getSeedOption() {
+        return optionToLong(randomSeedOption);
+    }
+
+    public List<String> getChromosomeListOption() {
+        return optionToStringList(multipleChromosomesOption);
+    }
+
+    public List<Integer> getMultipleResolutionOptions() {
+        return optionToIntegerList(multipleResolutionsOption);
+    }
+
+    public Integer getResolutionOption() {
+        List<Integer> resolutions = getMultipleResolutionOptions();
+        if (resolutions != null && resolutions.size() > 0) {
+            return resolutions.get(0);
+        }
+        return null;
     }
 
     public String getNormalizationStringOption() {
         return optionToString(normalizationTypeOption);
     }
 
-    /**
-     * String flags
-     */
-    private String optionToString(Option option) {
-        Object opt = getOptionValue(option);
-        return opt == null ? null : opt.toString();
+    public NormalizationType getNormalizationTypeOption(NormalizationHandler normalizationHandler) {
+        return retrieveNormalization(optionToString(normalizationTypeOption), normalizationHandler);
     }
 
     private NormalizationType retrieveNormalization(String norm, NormalizationHandler normalizationHandler) {

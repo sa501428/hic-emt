@@ -16,6 +16,7 @@ public class Excise extends CLT {
     private long numberOfReadsToSubsample = 0L;
     private double ratioToKeep = 1.0;
     private boolean doCleanUp = false;
+    private long seed;
 
     public Excise() {
         super("excise [-r resolution] [-c chromosomes] [--subsample num_contacts] " +
@@ -41,6 +42,7 @@ public class Excise extends CLT {
             numberOfReadsToSubsample = numReadsSubsample;
         }
         doCleanUp = parser.getCleanupOption();
+        seed = parser.getSeedOption();
     }
 
     @Override
@@ -61,7 +63,7 @@ public class Excise extends CLT {
         }
 
         FileBuildingMethod excision = new Excision(ds, chromosomeHandler, highestResolution, folder,
-                numberOfReadsToSubsample > 1, ratioToKeep, doCleanUp);
+                numberOfReadsToSubsample > 1, ratioToKeep, doCleanUp, seed);
         FileBuildingMethod.tryToBuild(excision, false);
     }
 }

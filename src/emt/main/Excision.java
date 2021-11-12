@@ -25,8 +25,8 @@ public class Excision extends FileBuildingMethod {
     private final double ratio;
 
     public Excision(Dataset dataset, ChromosomeHandler chromosomeHandler, int resolution, String path,
-                    boolean doSubsample, double ratio, boolean doCleanUp) {
-        super(resolution, path, dataset.getGenomeId(), doCleanUp);
+                    boolean doSubsample, double ratio, boolean doCleanUp, long seed) {
+        super(resolution, path, dataset.getGenomeId(), doCleanUp, seed);
         this.dataset = dataset;
         this.chromosomeHandler = chromosomeHandler;
         this.doSubsample = doSubsample;
@@ -65,7 +65,7 @@ public class Excision extends FileBuildingMethod {
 
         if (doSubsample) {
             Utils.writeOutSubsampledMND(blocks, resolution, 0, 0, bwMND,
-                    c1.getName(), c2.getName(), ratio);
+                    c1.getName(), c2.getName(), ratio, generator);
         } else {
             Utils.writeOutMND(blocks, resolution, 0, 0, bwMND,
                     c1.getName(), c2.getName());

@@ -12,6 +12,7 @@ public class Stitch extends CLT {
     private boolean adjustOrigin = false;
     private String[] files, stems, regions;
     private boolean doCleanUp = false;
+    private long seed;
 
     public Stitch() {
         super("stitch [-r resolution] [-k NONE/VC/VC_SQRT/KR] [--reset-origin]" +
@@ -45,13 +46,15 @@ public class Stitch extends CLT {
 
         adjustOrigin = parser.getResetOrigin();
         doCleanUp = parser.getCleanupOption();
+        seed = parser.getSeedOption();
     }
 
     @Override
     public void run() {
 
         UNIXTools.makeDir(folder);
-        FileBuildingMethod stitcher = new Stitcher(files, stems, regions, norm, adjustOrigin, resolution, folder, doCleanUp);
+        FileBuildingMethod stitcher = new Stitcher(files, stems, regions, norm, adjustOrigin,
+                resolution, folder, doCleanUp, seed);
         FileBuildingMethod.tryToBuild(stitcher, true);
     }
 }

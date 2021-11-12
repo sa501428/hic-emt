@@ -11,7 +11,7 @@ import java.util.Random;
 public class Utils {
 
     private static int progressCounter = 0;
-    private static final Random generator = new Random(0);
+    //private static final Random generator = new Random(0);
 
     public static void printProgressDot() {
         if (++progressCounter % 10 == 0) {
@@ -52,11 +52,12 @@ public class Utils {
     }
 
     public static void writeOutSubsampledMND(List<Block> blocks, int resolution, int xOrigin, int yOrigin,
-                                   BufferedWriter bwMND, String xChrom, String yChrom, double ratio) throws IOException {
+                                             BufferedWriter bwMND, String xChrom, String yChrom, double ratio,
+                                             Random generator) throws IOException {
         for (Block block : blocks) {
             for (ContactRecord cr : block.getContactRecords()) {
                 if (Float.isNaN(cr.getCounts())) continue;
-                int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio);
+                int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio, generator);
                 int gx = (cr.getBinX() * resolution) - xOrigin;
                 int gy = (cr.getBinY() * resolution) - yOrigin;
                 bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
@@ -65,10 +66,10 @@ public class Utils {
         }
     }
 
-    private static int getSubsampledNumberOfContacts(float counts, double ratio) {
+    private static int getSubsampledNumberOfContacts(float counts, double ratio, Random generator) {
         int newCounts = 0;
-        for(int z = 0; z < counts; z++){
-            if(generator.nextFloat() < ratio){
+        for (int z = 0; z < counts; z++) {
+            if (generator.nextFloat() < ratio) {
                 newCounts++;
             }
         }

@@ -6,6 +6,7 @@ import juicebox.tools.HiCTools;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 public abstract class FileBuildingMethod {
 
@@ -15,24 +16,16 @@ public abstract class FileBuildingMethod {
     protected final int resolution;
     protected final HiCZoom zoom;
     protected final boolean doCleanUp;
+    protected Random generator = new Random(0);
 
-    protected FileBuildingMethod(int resolution, String path, String cds, boolean doCleanUp) {
+    protected FileBuildingMethod(int resolution, String path, String cds, boolean doCleanUp, long seed) {
         this.resolution = resolution;
-        zoom = new HiCZoom(HiCZoom.HiCUnit.BP, resolution);
-        newMND = path + "/custom.mnd.txt";
-        newHiCFile = path + "/custom.hic";
-        newCDS = cds;
+        this.zoom = new HiCZoom(HiCZoom.HiCUnit.BP, resolution);
+        this.newMND = path + "/custom.mnd.txt";
+        this.newHiCFile = path + "/custom.hic";
+        this.newCDS = cds;
         this.doCleanUp = doCleanUp;
-    }
-
-    public static void tryToBuild(FileBuildingMethod method, boolean onlyDiagNoNorms) {
-        try {
-            method.buildTempFiles();
-            method.buildNewHiCFile(onlyDiagNoNorms);
-            method.deleteTempFilesIfNeedBe();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        this.generator.setSeed(seed);
     }
 
     abstract public void buildTempFiles() throws IOException;
@@ -56,5 +49,15 @@ public abstract class FileBuildingMethod {
                     newMND, newHiCFile, newCDS};
         }
         HiCTools.main(line);
+    }
+
+    public static void tryToBuild(FileBuildingMethod method, boolean onlyDiagNoNorms) {
+        try {
+            method.buildTempFiles();
+            method.buildNewHiCFile(onlyDiagNoNorms);
+            method.deleteTempFilesIfNeedBe();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
