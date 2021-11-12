@@ -58,10 +58,12 @@ public class Utils {
             for (ContactRecord cr : block.getContactRecords()) {
                 if (Float.isNaN(cr.getCounts())) continue;
                 int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio, generator);
-                int gx = (cr.getBinX() * resolution) - xOrigin;
-                int gy = (cr.getBinY() * resolution) - yOrigin;
-                bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
-                bwMND.newLine();
+                if (counts > 0) {
+                    int gx = (cr.getBinX() * resolution) - xOrigin;
+                    int gy = (cr.getBinY() * resolution) - yOrigin;
+                    bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
+                    bwMND.newLine();
+                }
             }
         }
     }
