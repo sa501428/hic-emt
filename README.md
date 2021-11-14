@@ -5,7 +5,9 @@
 Tools for extracting data from `.hic` files to build new compact files that use the latest file version. Files can be
 subsampled. Regions from different files may also be stitched together.
 
-### Excise
+## Excise
+
+### Usage
 
 ```
 excise [-r resolution] [-c chromosomes] [--seed random_seed] [--subsample num_contacts] 
@@ -25,7 +27,25 @@ The optional arguments are:
 * `--subsample <long>` number of Hi-C contacts to approximately retain when subsampling file. Default: no subsampling.
 * `--cleanup` delete temporary files (e.g. merged_no_dups) at the end. Default: keep all files.
 
-### Stitch
+### Example
+
+To subsample a map with a depth of ~5 million Hi-C contacts which goes down to 25kB resolution from `GM12878_30.hic`,
+use:
+
+```
+java -Xmx5g -jar hic_emt.jar excise -r 25000 --subsample 5000000 /Desktop/files/GM12878_30.hic gm_file_5M
+```
+
+To only subsample the first 3 chromosomes at this approximate depth (i.e. ~5 million contacts genomewide but ~600,000
+contacts when only filtering for first 3 chromosomes.):
+
+```
+java -Xmx5g -jar hic_emt.jar excise -r 25000 -c 1,2,3 --subsample 5000000 /Desktop/files/GM12878_30.hic gm_file_5M
+```
+
+## Stitch
+
+### Usage
 
 ```
 stitch [-r resolution] [-k NONE/VC/VC_SQRT/KR/SCALE] [--reset-origin] [--cleanup]
@@ -46,3 +66,13 @@ The optional arguments are:
 * `[--reset-origin]` set the origin of each region at its relative start, instead of absolute coordinates. Default: use
   absolute coordinates.
 * `[--cleanup]` delete temporary files (e.g. merged_no_dups) at the end. Default: keep all files.
+
+### Example
+
+To grab a subset of KR normalized reads from chromosomes 1, 2, and 3 from three `.hic` files and put them in one file:
+
+```
+java -Xmx5g -jar hic_emt.jar stitch -r 25000 -k KR GM12878.hic,K562.hic,Hap1.hic GM,K562,Hap1 
+                 1:100000000:110005000,2:115000000:125000000,3:80010000:90005000 results
+```
+
