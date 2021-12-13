@@ -4,6 +4,9 @@
 
 Tools for extracting data from `.hic` files to build new compact files that use the latest file version. Files can be
 subsampled. Regions from different files may also be stitched together.
+* Note: because files will be built to use the latest v9 .hic format, you will need to make sure whatever downstream tool you are using
+  is capable of reading v9 .hic files. The latest Juicer Tools jar, Straw, and Juicebox Jar (under Github Releases) are capable of doing so.
+  If you are unsure whether your downstream software can read v9 files, feel free to create a Github issue to ask in this repo.
 
 ## Excise
 
