@@ -23,9 +23,10 @@ public class Excision extends FileBuildingMethod {
     private final NormalizationType norm;
     private final boolean doSubsample;
     private final double ratio;
+    private final boolean onlyIntra;
 
     public Excision(Dataset dataset, ChromosomeHandler chromosomeHandler, int resolution, String path,
-                    boolean doSubsample, double ratio, boolean doCleanUp, long seed) {
+                    boolean doSubsample, double ratio, boolean doCleanUp, long seed, boolean onlyIntra) {
         super(resolution, path, dataset.getGenomeId(), doCleanUp, seed);
         this.dataset = dataset;
         this.chromosomeHandler = chromosomeHandler;
@@ -33,6 +34,7 @@ public class Excision extends FileBuildingMethod {
         this.ratio = ratio;
         useCustomCDS = !Utils.checkIfStandardGenome(dataset.getGenomeId());
         norm = dataset.getNormalizationHandler().getNormTypeFromString("NONE");
+        this.onlyIntra = onlyIntra;
     }
 
     public void buildTempFiles() throws IOException {
@@ -44,6 +46,7 @@ public class Excision extends FileBuildingMethod {
         Chromosome[] chromosomes = chromosomeHandler.getChromosomeArrayWithoutAllByAll();
         for (int i = 0; i < chromosomes.length; i++) {
             for (int j = i; j < chromosomes.length; j++) {
+                if (onlyIntra && i != j) continue;
                 processRegion(bwMND, chromosomes[i], chromosomes[j], doSubsample, ratio);
                 Utils.printProgressDot();
             }

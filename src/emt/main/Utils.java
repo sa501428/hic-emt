@@ -28,7 +28,7 @@ public class Utils {
 
     public static String getResolutionsToBuild(int highestResolution) {
         StringBuilder resolutionsToBuild = new StringBuilder("2500000");
-        int[] bpBinSizes = {1000000, 500000, 250000, 100000, 50000, 25000, 10000, 5000, 1000, 500, 100};
+        int[] bpBinSizes = {1000000, 500000, 250000, 100000, 50000, 25000, 10000, 5000, 2000, 1000, 500, 100};
         for (int res : bpBinSizes) {
             if (res >= highestResolution) {
                 resolutionsToBuild.append(",").append(res);
