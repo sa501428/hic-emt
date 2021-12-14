@@ -14,7 +14,7 @@ subsampled. Regions from different files may also be stitched together.
 
 ```
 excise [-r resolution] [-c chromosomes] [--seed random_seed] [--subsample num_contacts] 
-       [--cleanup] <file> <out_folder>
+       [--cleanup] [--only-intra] <file> <out_folder>
 ```
 
 The required arguments are:
@@ -29,6 +29,7 @@ The optional arguments are:
 * `--seed <long>` fixes random seed for PRNG in random subsampling. Default: `0`.
 * `--subsample <long>` number of Hi-C contacts to approximately retain when subsampling file. Default: no subsampling.
 * `--cleanup` delete temporary files (e.g. merged_no_dups) at the end. Default: keep all files.
+* `--only-intra` only extract intra-chromosomal contacts. Default: False (i.e. extract inter and intra contacts)
 
 ### Example
 
@@ -79,3 +80,23 @@ java -Xmx5g -jar hic_emt.jar stitch -r 25000 -k KR GM12878.hic,K562.hic,Hap1.hic
                  1:100000000:110005000,2:115000000:125000000,3:80010000:90005000 results
 ```
 
+## Info
+
+### Usage
+
+```
+info <hic_file>
+```
+
+The required arguments are:
+
+* `<hic_file>` URL or local path to `.hic` file for which information will be printed.
+
+### Example
+
+To validate and print all the general information
+(genome, chromosomes, resolutions, normalizations, etc) about a specific `.hic` file:
+
+```
+java -Xmx5g -jar hic_emt.jar info /Desktop/files/GM12878_30.hic
+```
