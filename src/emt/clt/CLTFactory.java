@@ -27,6 +27,7 @@ package emt.clt;
 import emt.Globals;
 import emt.clt.tools.CLT;
 import emt.clt.tools.Excise;
+import emt.clt.tools.Info;
 import emt.clt.tools.Stitch;
 
 
@@ -55,6 +56,8 @@ public class CLTFactory {
             return new Stitch();
         } else if (cmd.startsWith("excise")) {
             return new Excise();
+        } else if (cmd.startsWith("info") || cmd.startsWith("validate")) {
+            return new Info();
         }
         return null;
     }
