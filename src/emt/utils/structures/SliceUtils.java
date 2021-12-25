@@ -24,20 +24,20 @@
 
 package emt.utils.structures;
 
-import javastraw.feature1D.GenomeWideList;
+import javastraw.feature1D.GenomeWide1DList;
 
 import java.util.*;
 
 public class SliceUtils {
 
-    public static void reSort(GenomeWideList<SubcompartmentInterval> subcompartments) {
+    public static void reSort(GenomeWide1DList<SubcompartmentInterval> subcompartments) {
         subcompartments.filterLists((chr, featureList) -> {
             Collections.sort(featureList);
             return featureList;
         });
     }
 
-    public static void collapseGWList(GenomeWideList<SubcompartmentInterval> intraSubcompartments) {
+    public static void collapseGWList(GenomeWide1DList<SubcompartmentInterval> intraSubcompartments) {
         intraSubcompartments.filterLists((chr, featureList) -> collapseSubcompartmentIntervals(featureList));
     }
 

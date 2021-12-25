@@ -25,9 +25,9 @@
 package emt.utils.structures;
 
 
-import javastraw.feature1D.Feature;
+import javastraw.feature1D.Feature1D;
 
-public class SimpleInterval extends Feature implements Comparable<SimpleInterval> {
+public class SimpleInterval extends Feature1D implements Comparable<SimpleInterval> {
     private final Integer x1; // genomic position, not bin position
     private final Integer x2;
     private final String chrName;
@@ -47,7 +47,7 @@ public class SimpleInterval extends Feature implements Comparable<SimpleInterval
     }
 
     @Override
-    public Feature deepClone() {
+    public Feature1D deepClone() {
         return new SimpleInterval(chrIndex, chrName, x1, x2);
     }
 

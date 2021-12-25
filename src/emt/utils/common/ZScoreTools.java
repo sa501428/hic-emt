@@ -24,7 +24,7 @@
 
 package emt.utils.common;
 
-import javastraw.tools.ParallelizedJuicerTools;
+import javastraw.tools.ParallelizationTools;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -39,7 +39,7 @@ public class ZScoreTools {
         }
 
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             while (i < matrix.length) {
                 for (int j = 0; j < matrix[i].length; j++) {
@@ -58,7 +58,7 @@ public class ZScoreTools {
         float[] colStdDevs = getColStdDev(matrix, colMeans);
 
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             while (i < matrix.length) {
                 for (int j = 0; j < matrix[i].length; j++) {
@@ -78,7 +78,7 @@ public class ZScoreTools {
         final int[] totalColSize = new int[totalColSums.length];
 
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             double[] colSums = new double[matrix[0].length];
             int[] colSize = new int[totalColSums.length];
@@ -113,7 +113,7 @@ public class ZScoreTools {
         int[] totalColSize = new int[means.length];
 
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             double[] squares = new double[matrix[0].length];
             int[] colSize = new int[squares.length];

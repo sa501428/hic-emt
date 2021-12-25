@@ -24,7 +24,7 @@
 
 package emt.utils.structures;
 
-import javastraw.feature1D.Feature;
+import javastraw.feature1D.Feature1D;
 import javastraw.reader.basics.Chromosome;
 
 public class SubcompartmentInterval extends SimpleInterval {
@@ -66,7 +66,7 @@ public class SubcompartmentInterval extends SimpleInterval {
     }
 
     @Override
-    public Feature deepClone() {
+    public Feature1D deepClone() {
         return new SubcompartmentInterval(getChrIndex(), getChrName(), getX1(), getX2(), clusterID, clusterName);
     }
 }

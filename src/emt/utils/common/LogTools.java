@@ -24,14 +24,14 @@
 
 package emt.utils.common;
 
-import javastraw.tools.ParallelizedJuicerTools;
+import javastraw.tools.ParallelizationTools;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class LogTools {
     public static void simpleLogWithCleanup(float[][] matrix, float badVal) {
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             while (i < matrix.length) {
                 for (int j = 0; j < matrix[i].length; j++) {
@@ -65,7 +65,7 @@ public class LogTools {
 
     public static void simpleExpm1(float[][] matrix) {
         AtomicInteger index = new AtomicInteger(0);
-        ParallelizedJuicerTools.launchParallelizedCode(() -> {
+        ParallelizationTools.launchParallelizedCode(() -> {
             int i = index.getAndIncrement();
             while (i < matrix.length) {
                 for (int j = 0; j < matrix[i].length; j++) {
