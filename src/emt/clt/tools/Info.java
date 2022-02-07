@@ -40,10 +40,17 @@ public class Info extends CLT {
                     Arrays.asList(file.split("\\+")), true, false);
             Dataset ds = reader.read();
             HiCGlobals.verifySupportedHiCFileVersion(reader.getVersion());
-            assert ds.getGenomeId() != null;
+            if (ds.getGenomeId() == null) {
+                System.err.println("Null genome ID");
+                System.exit(12);
+            }
             System.out.println("Genome ID: " + ds.getGenomeId());
 
-            assert ds.getChromosomeHandler().size() > 0;
+            if (ds.getChromosomeHandler().size() < 1) {
+                System.err.println("Invalid chromosomes");
+                System.exit(13);
+            }
+
             for (Chromosome chrom : ds.getChromosomeHandler().getChromosomeArray()) {
                 System.out.println("Chromosome: index = " + chrom.getIndex() +
                         " name = " + chrom.getName() + " length = " + chrom.getLength());
@@ -63,7 +70,11 @@ public class Info extends CLT {
             NormalizationType none = ds.getNormalizationHandler().getNormTypeFromString("NONE");
 
             List<HiCZoom> zooms = ds.getBpZooms();
-            assert !zooms.isEmpty();
+            if (zooms.isEmpty()) {
+                System.err.println("No valid zooms");
+                System.exit(14);
+            }
+
             for (HiCZoom zoom : zooms) {
                 System.out.println("File has zoom: " + zoom);
             }
@@ -121,7 +132,7 @@ public class Info extends CLT {
         } catch (IOException error) {
             System.err.println(":( Validation failed");
             error.printStackTrace();
-            System.exit(1);
+            System.exit(15);
         }
     }
 

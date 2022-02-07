@@ -157,7 +157,7 @@ public class CommandLineParser extends CmdLineParser {
             return normalizationHandler.getNormTypeFromString(norm);
         } catch (IllegalArgumentException error) {
             System.err.println("Normalization must be one of \"NONE\", \"VC\", \"VC_SQRT\", \"KR\", or \"SCALE\".");
-            System.exit(7);
+            System.exit(11);
         }
         return null;
     }

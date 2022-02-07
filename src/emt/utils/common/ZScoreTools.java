@@ -35,7 +35,7 @@ public class ZScoreTools {
     public static void inPlaceScaleSqrtWeightCol(float[][] matrix, int[] weights) {
         if (weights.length != matrix[0].length) {
             System.err.println("Weights mismatch error " + weights.length + " vs " + matrix[0].length);
-            System.exit(54);
+            System.exit(16);
         }
 
         AtomicInteger index = new AtomicInteger(0);

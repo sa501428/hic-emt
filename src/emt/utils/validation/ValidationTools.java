@@ -15,12 +15,18 @@ public class ValidationTools {
 
 
     public static void validateGenomes(Dataset ds1, Dataset ds2) {
-        assert ds1.getGenomeId() != null;
+        if (ds1.getGenomeId() == null || ds2.getGenomeId() == null) {
+            System.err.println("Null genome ID");
+            System.exit(17);
+        }
+
         System.out.println("Genome1 ID: " + ds1.getGenomeId());
-        assert ds2.getGenomeId() != null;
         System.out.println("Genome2 ID: " + ds2.getGenomeId());
 
-        assert ds1.getChromosomeHandler().size() == ds2.getChromosomeHandler().size();
+        if (ds1.getChromosomeHandler().size() != ds2.getChromosomeHandler().size()) {
+            System.err.println("Chromosome numbers mismatch");
+            System.exit(18);
+        }
 
         Chromosome[] chromsArray1 = ds1.getChromosomeHandler().getChromosomeArray();
         Chromosome[] chromsArray2 = ds2.getChromosomeHandler().getChromosomeArray();
@@ -28,9 +34,12 @@ public class ValidationTools {
         Arrays.sort(chromsArray2, Comparator.comparing(Chromosome::getIndex));
 
         for (int c = 0; c < chromsArray1.length; c++) {
-            assert chromsArray1[c].getIndex() == chromsArray2[c].getIndex();
-            assert chromsArray1[c].getName().equals(chromsArray2[c].getName());
-            assert chromsArray1[c].getLength() == chromsArray2[c].getLength();
+            if (chromsArray1[c].getIndex() != chromsArray2[c].getIndex()
+                    || !(chromsArray1[c].getName().equals(chromsArray2[c].getName()))
+                    || chromsArray1[c].getLength() != chromsArray2[c].getLength()) {
+                System.err.println("Chromosome mismatch");
+                System.exit(19);
+            }
         }
         System.out.println("Genomes/Chromosomes are equivalent");
     }
@@ -39,25 +48,38 @@ public class ValidationTools {
         List<NormalizationType> norms1 = ds1.getNormalizationTypes();
         List<NormalizationType> norms2 = ds2.getNormalizationTypes();
 
-        assert norms1.size() == norms2.size();
+        if (norms1.size() != norms2.size()) {
+            System.err.println("Norms mismatch");
+            System.exit(20);
+        }
+
         norms1.sort(Comparator.comparing(NormalizationType::getLabel));
         norms2.sort(Comparator.comparing(NormalizationType::getLabel));
 
         for (int q = 0; q < norms1.size(); q++) {
-            assert norms1.get(q).getLabel().equals(norms2.get(q).getLabel());
+            if (!norms1.get(q).getLabel().equals(norms2.get(q).getLabel())) {
+                System.err.println("Norms mismatch");
+                System.exit(21);
+            }
         }
     }
 
     public static int validateResolutions(Dataset ds1, Dataset ds2) {
         List<HiCZoom> zooms1 = ds1.getBpZooms();
         List<HiCZoom> zooms2 = ds2.getBpZooms();
+        if (zooms1.size() != zooms2.size()) {
+            System.err.println("Zoom mismatch");
+            System.exit(22);
+        }
 
-        assert zooms1.size() == zooms2.size();
         zooms1.sort(Comparator.comparing(HiCZoom::getBinSize));
         zooms2.sort(Comparator.comparing(HiCZoom::getBinSize));
 
         for (int q = 0; q < zooms1.size(); q++) {
-            assert zooms1.get(q).getBinSize() == zooms2.get(q).getBinSize();
+            if (zooms1.get(q).getBinSize() == zooms2.get(q).getBinSize()) {
+                System.err.println("Resolution mismatch");
+                System.exit(23);
+            }
         }
 
         // no need to do this given already sorted list...

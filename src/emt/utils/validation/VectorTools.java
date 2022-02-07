@@ -5,7 +5,11 @@ import javastraw.reader.datastructures.ListOfDoubleArrays;
 public class VectorTools {
     public static void assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2) {
         try {
-            assert data1.getLength() == data2.getLength();
+            if (data1.getLength() == data2.getLength()) {
+                System.err.println("Vector mismatch");
+                System.exit(24);
+            }
+
             System.out.println(data1.getLength() + "  --  " + data2.getLength());
 
             double absError = 0;
@@ -13,10 +17,14 @@ public class VectorTools {
                 absError += Math.abs(data1.get(q) - data2.get(q));
             }
 
-            assert absError < 1e-5;
+            if (absError > 1e-5) {
+                System.err.println("Vector difference too big " + absError);
+                System.exit(25);
+            }
+
         } catch (Exception e) {
             //e.printStackTrace();
-            System.exit(43);
+            System.exit(26);
         }
         //assertAreEqual(data1.getValues(), data2.getValues());
     }
