@@ -6,6 +6,7 @@ import javastraw.reader.DatasetReader;
 import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.mzd.MatrixZoomData;
+import javastraw.reader.norm.NormalizationVector;
 import javastraw.reader.type.HiCZoom;
 import javastraw.reader.type.NormalizationType;
 import javastraw.tools.HiCFileTools;
@@ -59,6 +60,7 @@ public class Info extends CLT {
                 System.err.println("No normalization vectors in file");
             }
 
+            NormalizationType none = ds.getNormalizationHandler().getNormTypeFromString("NONE");
 
             List<HiCZoom> zooms = ds.getBpZooms();
             assert !zooms.isEmpty();
@@ -67,6 +69,28 @@ public class Info extends CLT {
             }
 
             Chromosome[] array = ds.getChromosomeHandler().getChromosomeArrayWithoutAllByAll();
+            for (Chromosome chrom : array) {
+                for (NormalizationType norm : norms) {
+                    for (HiCZoom zoom : zooms) {
+                        NormalizationVector nv = ds.getNormalizationVector(chrom.getIndex(), zoom, norm);
+                        try {
+                            if (nv == null || nv.getData() == null) {
+                                System.err.println("Warning: no norm vector for: " + chrom.getName()
+                                        + " - " + norm.getLabel()
+                                        + " - " + zoom.getBinSize()
+                                );
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error: no norm vector for: " + chrom.getName()
+                                    + " - " + norm.getLabel()
+                                    + " - " + zoom.getBinSize()
+                            );
+                        }
+                    }
+                }
+            }
+
+
             for (Chromosome chr : array) {
                 for (Chromosome chr2 : array) {
                     System.out.print(".");
@@ -80,14 +104,12 @@ public class Info extends CLT {
                                 System.err.println("Warning: no reads in " +
                                         chr.getName() + "-" + chr2.getName() + " at resolution " + zoom.getBinSize());
                             } else {
-                                for (NormalizationType type : norms) {
-                                    try {
-                                        reader.readNormalizedBlock(0, zd, type);
-                                    } catch (Exception e) {
-                                        System.err.println("Unable to read block 0 in " +
-                                                getBlockDescription(chr, chr2, zoom, type) +
-                                                "\n" + e.getLocalizedMessage() + "\n");
-                                    }
+                                try {
+                                    reader.readNormalizedBlock(0, zd, none);
+                                } catch (Exception e) {
+                                    System.err.println("Unable to read block 0 in " +
+                                            getBlockDescription(chr, chr2, zoom, none) +
+                                            "\n" + e.getLocalizedMessage() + "\n");
                                 }
                             }
                         }
