@@ -24,7 +24,7 @@ public class ValidationTools {
         System.out.println("Genome2 ID: " + ds2.getGenomeId());
 
         if (ds1.getChromosomeHandler().size() != ds2.getChromosomeHandler().size()) {
-            System.err.println("Chromosome numbers mismatch");
+            System.err.println("Mismatch in the number of chromosomes");
             System.exit(18);
         }
 
@@ -49,7 +49,7 @@ public class ValidationTools {
         List<NormalizationType> norms2 = ds2.getNormalizationTypes();
 
         if (norms1.size() != norms2.size()) {
-            System.err.println("Norms mismatch");
+            System.err.println("Number of norms mismatch");
             System.exit(20);
         }
 
@@ -58,7 +58,7 @@ public class ValidationTools {
 
         for (int q = 0; q < norms1.size(); q++) {
             if (!norms1.get(q).getLabel().equals(norms2.get(q).getLabel())) {
-                System.err.println("Norms mismatch");
+                System.err.println("Normalization mismatch");
                 System.exit(21);
             }
         }
@@ -76,7 +76,7 @@ public class ValidationTools {
         zooms2.sort(Comparator.comparing(HiCZoom::getBinSize));
 
         for (int q = 0; q < zooms1.size(); q++) {
-            if (zooms1.get(q).getBinSize() == zooms2.get(q).getBinSize()) {
+            if (zooms1.get(q).getBinSize() != zooms2.get(q).getBinSize()) {
                 System.err.println("Resolution mismatch");
                 System.exit(23);
             }
@@ -111,7 +111,8 @@ public class ValidationTools {
                         continue;
                     }
                     if (nv1.getData() == nv2.getData()) continue;
-                    VectorTools.assertAreEqual(nv1.getData(), nv2.getData());
+                    VectorTools.assertAreEqual(nv1.getData(), nv2.getData(), "Norm vector " +
+                            chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                 }
             }
         }
@@ -131,7 +132,8 @@ public class ValidationTools {
                             false).getExpectedValuesWithNormalization(chrom.getIndex());
 
                     if (d1 == d2) continue;
-                    VectorTools.assertAreEqual(d1, d2);
+                    VectorTools.assertAreEqual(d1, d2, "Expected vector " +
+                            chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                 }
             }
         }

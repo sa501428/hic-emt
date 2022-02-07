@@ -3,25 +3,27 @@ package emt.utils.validation;
 import javastraw.reader.datastructures.ListOfDoubleArrays;
 
 public class VectorTools {
-    public static void assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2) {
+    public static void assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2, String description) {
         try {
-            if (data1.getLength() == data2.getLength()) {
-                System.err.println("Vector mismatch");
-                System.exit(24);
+            if (data1.getLength() != data2.getLength()) {
+                //System.err.println("Vector length mismatch: "+data1.getLength() +" vs "+ data2.getLength() + " " + description);
+                //System.exit(24);
             }
 
-            System.out.println(data1.getLength() + "  --  " + data2.getLength());
+            long n = Math.min(data1.getLength(), data2.getLength());
 
             double absError = 0;
-            for (long q = 0; q < data1.getLength(); q++) {
-                absError += Math.abs(data1.get(q) - data2.get(q));
+            for (long q = 0; q < n; q++) {
+                double err = Math.abs(data1.get(q) - data2.get(q));
+                if (!Double.isNaN(err)) {
+                    absError += err;
+                }
             }
 
-            if (absError > 1e-5) {
+            if (absError > 1e-10) {
                 System.err.println("Vector difference too big " + absError);
                 System.exit(25);
             }
-
         } catch (Exception e) {
             //e.printStackTrace();
             System.exit(26);
