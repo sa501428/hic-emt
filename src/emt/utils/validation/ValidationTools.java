@@ -24,8 +24,8 @@ public class ValidationTools {
 
         Chromosome[] chromsArray1 = ds1.getChromosomeHandler().getChromosomeArray();
         Chromosome[] chromsArray2 = ds2.getChromosomeHandler().getChromosomeArray();
-        Arrays.sort(chromsArray1);
-        Arrays.sort(chromsArray2);
+        Arrays.sort(chromsArray1, Comparator.comparing(Chromosome::getIndex));
+        Arrays.sort(chromsArray2, Comparator.comparing(Chromosome::getIndex));
 
         for (int c = 0; c < chromsArray1.length; c++) {
             assert chromsArray1[c].getIndex() == chromsArray2[c].getIndex();
@@ -84,6 +84,10 @@ public class ValidationTools {
                     NormalizationVector nv1 = ds1.getNormalizationVector(chrom.getIndex(), zoom, norm);
                     NormalizationVector nv2 = ds2.getNormalizationVector(chrom.getIndex(), zoom, norm);
                     if (nv1 == nv2) continue;
+                    if (nv1 == null || nv2 == null) {
+                        System.err.println("NULL ERROR IN NORM " + norm.getLabel() + " at " + zoom.getBinSize() + "!!! nv1 " + nv1 + "  nv2 " + nv2);
+                        continue;
+                    }
                     if (nv1.getData() == nv2.getData()) continue;
                     VectorTools.assertAreEqual(nv1.getData(), nv2.getData());
                 }

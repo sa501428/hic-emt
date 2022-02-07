@@ -10,13 +10,13 @@ public class Equals extends CLT {
     private String file1, file2;
 
     public Equals() {
-        super("info <file>");
+        super("equals <file1.hic> <file2.hic>");
     }
 
     @Override
     protected void readAdditionalArguments(String[] args, CommandLineParser parser) {
-        if (args.length != 2) {
-            printUsageAndExit(8);
+        if (args.length != 3) {
+            printUsageAndExit(9);
         }
 
         file1 = args[1];
