@@ -3,6 +3,7 @@ package emt.utils.validation;
 import javastraw.reader.Dataset;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.datastructures.ListOfDoubleArrays;
+import javastraw.reader.expected.ExpectedValueFunction;
 import javastraw.reader.norm.NormalizationVector;
 import javastraw.reader.type.HiCZoom;
 import javastraw.reader.type.NormalizationType;
@@ -62,6 +63,7 @@ public class ValidationTools {
                 System.exit(21);
             }
         }
+        System.out.println("Normalization types are equivalent");
     }
 
     public static int validateResolutions(Dataset ds1, Dataset ds2) {
@@ -83,6 +85,7 @@ public class ValidationTools {
         }
 
         // no need to do this given already sorted list...
+        System.out.println("Resolution levels are equivalent");
         return min(zooms1);
     }
 
@@ -116,6 +119,7 @@ public class ValidationTools {
                 }
             }
         }
+        System.out.println("Normalization vectors are equivalent");
     }
 
     public static void validateExpectedVectors(Dataset ds1, Dataset ds2) {
@@ -126,17 +130,20 @@ public class ValidationTools {
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
                 for (HiCZoom zoom : zooms) {
-                    ListOfDoubleArrays d1 = ds1.getExpectedValues(zoom, norm,
-                            false).getExpectedValuesWithNormalization(chrom.getIndex());
-                    ListOfDoubleArrays d2 = ds2.getExpectedValues(zoom, norm,
-                            false).getExpectedValuesWithNormalization(chrom.getIndex());
+                    ExpectedValueFunction e1 = ds1.getExpectedValues(zoom, norm, false);
+                    ExpectedValueFunction e2 = ds2.getExpectedValues(zoom, norm, false);
+                    if (e1 == e2) continue;
 
+                    ListOfDoubleArrays d1 = e1.getExpectedValuesWithNormalization(chrom.getIndex());
+                    ListOfDoubleArrays d2 = e2.getExpectedValuesWithNormalization(chrom.getIndex());
                     if (d1 == d2) continue;
+
                     VectorTools.assertAreEqual(d1, d2, "Expected vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                 }
             }
         }
+        System.out.println("Expected vectors are equivalent");
     }
 
     public static void validateRawCounts(Dataset ds1, Dataset ds2, int highestRes) {
