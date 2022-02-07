@@ -25,10 +25,7 @@
 package emt.clt;
 
 import emt.Globals;
-import emt.clt.tools.CLT;
-import emt.clt.tools.Excise;
-import emt.clt.tools.Info;
-import emt.clt.tools.Stitch;
+import emt.clt.tools.*;
 
 
 /**
@@ -45,7 +42,7 @@ public class CLTFactory {
         System.out.println("\t" + "-h, --help print help");
         System.out.println("\t" + "-v, --verbose verbose mode");
         System.out.println("\t" + "-V, --version print version");
-        System.out.println("Tools: excise, stitch");
+        System.out.println("Tools: excise, stitch, info/validate, equals");
         System.out.println("Type hic_emt <tool_name> for more detailed usage instructions");
     }
 
@@ -58,6 +55,8 @@ public class CLTFactory {
             return new Excise();
         } else if (cmd.startsWith("info") || cmd.startsWith("validate")) {
             return new Info();
+        } else if (cmd.startsWith("equals")) {
+            return new Equals();
         }
         return null;
     }
