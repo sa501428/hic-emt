@@ -103,6 +103,8 @@ public class ValidationTools {
         List<NormalizationType> norms = ds1.getNormalizationTypes();
         List<HiCZoom> zooms = ds1.getBpZooms();
 
+        double magnitude = 0;
+
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
                 for (HiCZoom zoom : zooms) {
@@ -114,12 +116,12 @@ public class ValidationTools {
                         continue;
                     }
                     if (nv1.getData() == nv2.getData()) continue;
-                    VectorTools.assertAreEqual(nv1.getData(), nv2.getData(), "Norm vector " +
+                    magnitude += VectorTools.assertAreEqual(nv1.getData(), nv2.getData(), "Norm vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                 }
             }
         }
-        System.out.println("Normalization vectors are equivalent");
+        System.out.println("Normalization vectors are equivalent (" + magnitude + ")");
     }
 
     public static void validateExpectedVectors(Dataset ds1, Dataset ds2) {
@@ -127,6 +129,7 @@ public class ValidationTools {
         List<NormalizationType> norms = ds1.getNormalizationTypes();
         List<HiCZoom> zooms = ds1.getBpZooms();
 
+        double magnitude = 0;
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
                 for (HiCZoom zoom : zooms) {
@@ -138,12 +141,12 @@ public class ValidationTools {
                     ListOfDoubleArrays d2 = e2.getExpectedValuesWithNormalization(chrom.getIndex());
                     if (d1 == d2) continue;
 
-                    VectorTools.assertAreEqual(d1, d2, "Expected vector " +
+                    magnitude += VectorTools.assertAreEqual(d1, d2, "Expected vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                 }
             }
         }
-        System.out.println("Expected vectors are equivalent");
+        System.out.println("Expected vectors are equivalent (" + magnitude + ")");
     }
 
     public static void validateRawCounts(Dataset ds1, Dataset ds2, int highestRes) {

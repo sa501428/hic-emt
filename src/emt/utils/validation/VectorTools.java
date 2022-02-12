@@ -4,7 +4,8 @@ import emt.Globals;
 import javastraw.reader.datastructures.ListOfDoubleArrays;
 
 public class VectorTools {
-    public static void assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2, String description) {
+    public static double assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2, String description) {
+        double magnitude = 0;
         try {
             if (data1.getLength() != data2.getLength()) {
                 //System.err.println("Vector length mismatch: "+data1.getLength() +" vs "+ data2.getLength() + " " + description);
@@ -13,7 +14,6 @@ public class VectorTools {
 
             long n = Math.min(data1.getLength(), data2.getLength());
 
-            double magnitude = 0;
             double magnitude1 = 0;
             double magnitude2 = 0;
             double absError = 0;
@@ -53,6 +53,7 @@ public class VectorTools {
             System.exit(26);
         }
         //assertAreEqual(data1.getValues(), data2.getValues());
+        return magnitude;
     }
 
     /*
