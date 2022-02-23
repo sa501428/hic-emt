@@ -57,6 +57,8 @@ public class CLTFactory {
             return new Info();
         } else if (cmd.startsWith("equal")) {
             return new Equals();
+        } else if (cmd.startsWith("compare-norms")) {
+            return new CompareNorms();
         }
         return null;
     }
