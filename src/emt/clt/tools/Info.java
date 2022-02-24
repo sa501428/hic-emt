@@ -101,25 +101,25 @@ public class Info extends CLT {
                 }
             }
 
-
-            for (Chromosome chr : array) {
-                for (Chromosome chr2 : array) {
+            for (Chromosome chrom1 : array) {
+                for (Chromosome chrom2 : array) {
                     System.out.print(".");
-                    Matrix matrix = ds.getMatrix(chr, chr2);
+                    Matrix matrix = ds.getMatrix(chrom1, chrom2);
                     if (matrix == null) {
-                        System.err.println("Warning: no reads in " + chr.getName() + "-" + chr2.getName());
+                        System.err.println("Warning: no reads in " + chrom1.getName() + "-" + chrom2.getName());
                     } else {
                         for (HiCZoom zoom : zooms) {
                             MatrixZoomData zd = matrix.getZoomData(zoom);
                             if (zd == null) {
                                 System.err.println("Warning: no reads in " +
-                                        chr.getName() + "-" + chr2.getName() + " at resolution " + zoom.getBinSize());
+                                        chrom1.getName() + "-" + chrom2.getName() + " at resolution " + zoom.getBinSize());
                             } else {
                                 try {
-                                    reader.readNormalizedBlock(0, zd, none);
+                                    reader.readNormalizedBlock(0, zd.getKey(), none, chrom1.getIndex(),
+                                            chrom2.getIndex(), zoom);
                                 } catch (Exception e) {
                                     System.err.println("Unable to read block 0 in " +
-                                            getBlockDescription(chr, chr2, zoom, none) +
+                                            getBlockDescription(chrom1, chrom2, zoom, none) +
                                             "\n" + e.getLocalizedMessage() + "\n");
                                 }
                             }

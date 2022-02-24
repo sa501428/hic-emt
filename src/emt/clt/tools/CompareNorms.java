@@ -51,6 +51,7 @@ public class CompareNorms extends CLT {
                         continue;
                     }
                     if (nv1.getData() == nv2.getData()) continue;
+                    System.out.println("Norm vector " + chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                     compareVectorsForNans(nv1.getData(), nv2.getData(), "Norm vector " +
                                     chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize(),
                             numNans, q);
