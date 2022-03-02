@@ -1,6 +1,7 @@
 package emt.clt.tools;
 
 import emt.clt.CommandLineParser;
+import hic.HiCGlobals;
 import javastraw.reader.Dataset;
 import javastraw.reader.DatasetReader;
 import javastraw.reader.Matrix;
@@ -10,7 +11,6 @@ import javastraw.reader.norm.NormalizationVector;
 import javastraw.reader.type.HiCZoom;
 import javastraw.reader.type.NormalizationType;
 import javastraw.tools.HiCFileTools;
-import juicebox.HiCGlobals;
 
 import java.io.IOException;
 import java.util.Arrays;

@@ -1,8 +1,8 @@
 package emt.main;
 
+import hic.tools.HiCTools;
 import jargs.gnu.CmdLineParser;
 import javastraw.reader.type.HiCZoom;
-import juicebox.tools.HiCTools;
 
 import java.io.File;
 import java.io.IOException;
