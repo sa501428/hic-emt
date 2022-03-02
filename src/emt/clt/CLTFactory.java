@@ -59,6 +59,8 @@ public class CLTFactory {
             return new Equals();
         } else if (cmd.startsWith("compare-norms")) {
             return new CompareNorms();
+        } else if (cmd.startsWith("check-sparsity")) {
+            return new CheckSparsity();
         }
         return null;
     }

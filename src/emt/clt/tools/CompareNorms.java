@@ -55,8 +55,8 @@ public class CompareNorms extends CLT {
                     compareVectorsForNans(nv1.getData(), nv2.getData(), "Norm vector " +
                                     chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize(),
                             numNans, q);
-                    compareRowSums(ds1, ds2, chrom, norm, zoom, nv1.getData(), nv2.getData(), "Norm vector " +
-                                    chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize(),
+                    compareRowSums(ds1, ds2, chrom, norm, zoom, nv1.getData(), nv2.getData(),
+                            "Norm vector " + chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize(),
                             errMeans, errMedians, q);
                     somethingWasAdded = true;
                 }
@@ -151,6 +151,5 @@ public class CompareNorms extends CLT {
         Dataset ds1 = HiCFileTools.extractDatasetForCLT(file1, true, false);
         Dataset ds2 = HiCFileTools.extractDatasetForCLT(file2, true, false);
         compareNormVectors(ds1, ds2);
-
     }
 }
