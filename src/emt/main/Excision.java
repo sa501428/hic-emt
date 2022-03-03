@@ -4,16 +4,15 @@ import javastraw.reader.Dataset;
 import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.basics.ChromosomeHandler;
-import javastraw.reader.block.Block;
+import javastraw.reader.block.ContactRecord;
 import javastraw.reader.mzd.MatrixZoomData;
 import javastraw.reader.type.NormalizationType;
-import javastraw.tools.HiCFileTools;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.List;
+import java.util.Iterator;
 
 public class Excision extends FileBuildingMethod {
 
@@ -56,21 +55,15 @@ public class Excision extends FileBuildingMethod {
 
     private void processRegion(BufferedWriter bwMND, Chromosome c1, Chromosome c2,
                                boolean doSubsample, double ratio) throws IOException {
-
-        int end1 = (int) (c1.getLength() / resolution) + 1;
-        int end2 = (int) (c2.getLength() / resolution) + 1;
-
         Matrix matrix = dataset.getMatrix(c1, c2);
         MatrixZoomData zd = matrix.getZoomData(zoom);
 
-        List<Block> blocks = HiCFileTools.getAllRegionBlocks(zd, 0, end1, 0, end2,
-                norm, false);
-
+        Iterator<ContactRecord> iterator = zd.getDirectIterator();
         if (doSubsample) {
-            Utils.writeOutSubsampledMND(blocks, resolution, 0, 0, bwMND,
+            Utils.writeOutSubsampledMND(iterator, resolution, 0, 0, bwMND,
                     c1.getName(), c2.getName(), ratio, generator);
         } else {
-            Utils.writeOutMND(blocks, resolution, 0, 0, bwMND,
+            Utils.writeOutMND(iterator, resolution, 0, 0, bwMND,
                     c1.getName(), c2.getName());
         }
     }

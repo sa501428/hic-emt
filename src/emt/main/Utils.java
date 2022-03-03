@@ -5,6 +5,7 @@ import javastraw.reader.block.ContactRecord;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
@@ -41,28 +42,51 @@ public class Utils {
                                    BufferedWriter bwMND, String xChrom, String yChrom) throws IOException {
         for (Block block : blocks) {
             for (ContactRecord cr : block.getContactRecords()) {
-                if (Float.isNaN(cr.getCounts())) continue;
-                int gx = (cr.getBinX() * resolution) - xOrigin;
-                int gy = (cr.getBinY() * resolution) - yOrigin;
-                bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + cr.getCounts());
-                bwMND.newLine();
+                processContactRecordForWriteOutMND(cr, resolution, xChrom, yChrom, xOrigin, yOrigin, bwMND);
             }
         }
     }
 
-    public static void writeOutSubsampledMND(List<Block> blocks, int resolution, int xOrigin, int yOrigin,
+    public static void writeOutMND(Iterator<ContactRecord> iterator, int resolution, int xOrigin, int yOrigin,
+                                   BufferedWriter bwMND, String xChrom, String yChrom) throws IOException {
+        while (iterator.hasNext()) {
+            ContactRecord cr = iterator.next();
+            processContactRecordForWriteOutMND(cr, resolution, xChrom, yChrom, xOrigin, yOrigin, bwMND);
+        }
+    }
+
+    private static void processContactRecordForWriteOutMND(ContactRecord cr, int resolution,
+                                                           String xChrom, String yChrom,
+                                                           int xOrigin, int yOrigin, BufferedWriter bwMND) throws IOException {
+        if (cr.getCounts() > 0) {
+            int gx = (cr.getBinX() * resolution) - xOrigin;
+            int gy = (cr.getBinY() * resolution) - yOrigin;
+            bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + cr.getCounts());
+            bwMND.newLine();
+        }
+    }
+
+    public static void writeOutSubsampledMND(Iterator<ContactRecord> iterator, int resolution, int xOrigin, int yOrigin,
                                              BufferedWriter bwMND, String xChrom, String yChrom, double ratio,
                                              Random generator) throws IOException {
-        for (Block block : blocks) {
-            for (ContactRecord cr : block.getContactRecords()) {
-                if (Float.isNaN(cr.getCounts())) continue;
-                int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio, generator);
-                if (counts > 0) {
-                    int gx = (cr.getBinX() * resolution) - xOrigin;
-                    int gy = (cr.getBinY() * resolution) - yOrigin;
-                    bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
-                    bwMND.newLine();
-                }
+        while (iterator.hasNext()) {
+            ContactRecord cr = iterator.next();
+            processContactRecordForWriteOutSubsampledMND(cr, resolution, xChrom, yChrom, xOrigin, yOrigin, bwMND,
+                    ratio, generator);
+        }
+    }
+
+    private static void processContactRecordForWriteOutSubsampledMND(ContactRecord cr, int resolution,
+                                                                     String xChrom, String yChrom,
+                                                                     int xOrigin, int yOrigin, BufferedWriter bwMND,
+                                                                     double ratio, Random generator) throws IOException {
+        if (cr.getCounts() > 0) {
+            int counts = getSubsampledNumberOfContacts(cr.getCounts(), ratio, generator);
+            if (counts > 0) {
+                int gx = (cr.getBinX() * resolution) - xOrigin;
+                int gy = (cr.getBinY() * resolution) - yOrigin;
+                bwMND.write(xChrom + " " + gx + " " + yChrom + " " + gy + " " + counts);
+                bwMND.newLine();
             }
         }
     }
