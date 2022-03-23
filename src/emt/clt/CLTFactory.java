@@ -51,6 +51,8 @@ public class CLTFactory {
         cmd = cmd.toLowerCase();
         if (cmd.startsWith("stitch")) {
             return new Stitch();
+        } else if (cmd.startsWith("combine") || cmd.startsWith("add")) {
+            return new Addition();
         } else if (cmd.startsWith("excise")) {
             return new Excise();
         } else if (cmd.startsWith("info") || cmd.startsWith("validate")) {

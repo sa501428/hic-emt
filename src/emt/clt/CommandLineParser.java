@@ -44,9 +44,10 @@ public class CommandLineParser extends CmdLineParser {
     private final Option versionOption = addBooleanOption('V', "version");
     private final Option cleanUpOption = addBooleanOption("cleanup");
     private final Option resetOriginOption = addBooleanOption("reset-origin");
+    private final Option earlyExitOption = addBooleanOption("early-exit");
     private final Option onlyIntraOption = addBooleanOption("only-intra");
     private final Option multipleChromosomesOption = addStringOption('c', "chromosomes");
-    private final Option multipleResolutionsOption = addStringOption('r', "resolution(s)");
+    private final Option multipleResolutionsOption = addStringOption('r', "resolution");
     private final Option subsampleNumOption = addIntegerOption("subsample");
     private final Option randomSeedOption = addStringOption("seed");
     private final Option normalizationTypeOption = addStringOption('k', "normalization");
@@ -111,6 +112,10 @@ public class CommandLineParser extends CmdLineParser {
 
     public boolean getResetOrigin() {
         return optionToBoolean(resetOriginOption);
+    }
+
+    public boolean getEarlyExitOption() {
+        return optionToBoolean(earlyExitOption);
     }
 
     public boolean getIntraOption() {
