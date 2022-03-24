@@ -32,7 +32,7 @@ public class CompareNorms extends CLT {
 
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
-                if (norm.getLabel().toLowerCase().contains("vc")) continue;
+                //if (norm.getLabel().toLowerCase().contains("vc")) continue;
 
                 int[] res = new int[zooms.size()];
                 double[][] errMeans = new double[2][zooms.size()];
@@ -57,7 +57,7 @@ public class CompareNorms extends CLT {
                             numNans, q);
                     compareRowSums(ds1, ds2, chrom, norm, zoom, nv1.getData(), nv2.getData(),
                             "Norm vector " + chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize(),
-                            errMeans, errMedians, q);
+                            errMeans, errMedians, q, chrom.getName() + "_" + norm.getLabel() + "_" + zoom.getBinSize());
                     somethingWasAdded = true;
                 }
 
@@ -74,12 +74,12 @@ public class CompareNorms extends CLT {
 
     private static void compareRowSums(Dataset ds1, Dataset ds2, Chromosome chrom, NormalizationType norm, HiCZoom zoom,
                                        ListOfDoubleArrays nv1, ListOfDoubleArrays nv2, String description,
-                                       double[][] errMeans, double[][] errMedians, int zIndex) {
-        DescriptiveStatistics rowSumsStats1 = MatrixSum.getRowSums(ds1, chrom, norm, zoom, nv1);
+                                       double[][] errMeans, double[][] errMedians, int zIndex, String stem) {
+        DescriptiveStatistics rowSumsStats1 = MatrixSum.getRowSums(ds1, chrom, norm, zoom, nv1, stem + "_f1", false);
         if (rowSumsStats1 != null) {
             printErrs(rowSumsStats1, description, "Norm 1", errMeans, errMedians, 0, zIndex);
         }
-        DescriptiveStatistics rowSumsStats2 = MatrixSum.getRowSums(ds2, chrom, norm, zoom, nv2);
+        DescriptiveStatistics rowSumsStats2 = MatrixSum.getRowSums(ds2, chrom, norm, zoom, nv2, stem + "_f2", false);
         if (rowSumsStats2 != null) {
             printErrs(rowSumsStats2, description, "Norm 2", errMeans, errMedians, 1, zIndex);
         }
