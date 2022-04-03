@@ -6,8 +6,10 @@ import javastraw.reader.datastructures.ListOfDoubleArrays;
 import javastraw.reader.expected.ExpectedValueFunction;
 import javastraw.reader.norm.NormalizationVector;
 import javastraw.reader.type.HiCZoom;
+import javastraw.reader.type.NormalizationHandler;
 import javastraw.reader.type.NormalizationType;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -126,10 +128,12 @@ public class ValidationTools {
 
     public static void validateExpectedVectors(Dataset ds1, Dataset ds2) {
         Chromosome[] array = ds1.getChromosomeHandler().getChromosomeArrayWithoutAllByAll();
-        List<NormalizationType> norms = ds1.getNormalizationTypes();
+        List<NormalizationType> norms = new ArrayList<>(ds1.getNormalizationTypes());
+        norms.add(NormalizationHandler.NONE);
         List<HiCZoom> zooms = ds1.getBpZooms();
 
         double magnitude = 0;
+        int counter = 0;
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
                 for (HiCZoom zoom : zooms) {
@@ -143,10 +147,11 @@ public class ValidationTools {
 
                     magnitude += VectorTools.assertAreEqual(d1, d2, "Expected vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
+                    counter++;
                 }
             }
         }
-        System.out.println("Expected vectors are equivalent (" + magnitude + ")");
+        System.out.println("Expected vectors are equivalent (" + magnitude + " : " + counter + ")");
     }
 
     public static void validateRawCounts(Dataset ds1, Dataset ds2, int highestRes) {
