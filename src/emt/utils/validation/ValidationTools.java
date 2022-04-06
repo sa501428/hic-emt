@@ -36,7 +36,11 @@ public class ValidationTools {
         Arrays.sort(chromsArray1, Comparator.comparing(Chromosome::getIndex));
         Arrays.sort(chromsArray2, Comparator.comparing(Chromosome::getIndex));
 
+
         for (int c = 0; c < chromsArray1.length; c++) {
+            System.out.println(chromsArray1[c].getIndex() + " " + chromsArray1[c].getName() + " " + chromsArray1[c].getLength());
+            System.out.println(chromsArray2[c].getIndex() + " " + chromsArray2[c].getName() + " " + chromsArray2[c].getLength());
+
             if (chromsArray1[c].getIndex() != chromsArray2[c].getIndex()
                     || !(chromsArray1[c].getName().equals(chromsArray2[c].getName()))
                     || chromsArray1[c].getLength() != chromsArray2[c].getLength()) {

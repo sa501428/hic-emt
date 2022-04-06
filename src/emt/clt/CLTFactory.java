@@ -57,6 +57,10 @@ public class CLTFactory {
             return new Excise();
         } else if (cmd.startsWith("info") || cmd.startsWith("validate")) {
             return new Info();
+        } else if (cmd.startsWith("stats")) {
+            return new Stats();
+        } else if (cmd.startsWith("graphs")) {
+            return new Graphs();
         } else if (cmd.startsWith("equal")) {
             return new Equals();
         } else if (cmd.startsWith("compare-norms")) {
