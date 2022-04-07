@@ -4,11 +4,12 @@ import emt.Globals;
 import javastraw.reader.datastructures.ListOfDoubleArrays;
 
 public class VectorTools {
-    public static double assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2, String description) {
+    public static double[] assertAreEqual(ListOfDoubleArrays data1, ListOfDoubleArrays data2, String description) {
         double magnitude = 0;
+        double absError = 0;
         try {
             if (data1.getLength() != data2.getLength()) {
-                //System.err.println("Vector length mismatch: "+data1.getLength() +" vs "+ data2.getLength() + " " + description);
+                System.err.println("Vector length mismatch: " + data1.getLength() + " vs " + data2.getLength() + " " + description);
                 //System.exit(24);
             }
 
@@ -16,7 +17,7 @@ public class VectorTools {
 
             double magnitude1 = 0;
             double magnitude2 = 0;
-            double absError = 0;
+
             long numVals = 0;
             for (long q = 0; q < n; q++) {
                 double err = Math.abs(data1.get(q) - data2.get(q));
@@ -39,7 +40,9 @@ public class VectorTools {
             magnitude1 = Math.sqrt(magnitude1);
             magnitude2 = Math.sqrt(magnitude2);
 
-            absError /= numVals;
+            if (numVals > 0) {
+                absError /= numVals;
+            }
 
             if (absError > 1e-3) {
                 System.err.println("Vector mean error too big " + absError + "  " + description);
@@ -53,11 +56,9 @@ public class VectorTools {
                 }
             }
         } catch (Exception e) {
-            //e.printStackTrace();
             System.exit(26);
         }
-        //assertAreEqual(data1.getValues(), data2.getValues());
-        return magnitude;
+        return new double[]{magnitude, absError};
     }
 
     /*

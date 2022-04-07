@@ -1,11 +1,19 @@
 package emt.clt;
 
-import emt.Tools;
+import javastraw.reader.Dataset;
+import javastraw.tools.HiCFileTools;
 
 @SuppressWarnings({"UnusedAssignment", "unused"})
 public class IJProcessing {
     public static void main(String[] argv) throws Exception {
 
+        Dataset ds = HiCFileTools.extractDatasetForCLT(
+                "https://hicfiles.s3.wasabisys.com/encode_hic_files/mq_30_hic_files/uw054_lvent.hic",
+                false, false);
+        System.out.println(ds.getGenomeId());
+
+
+        /*
         String[] command = new String[]{"excise", "-r", "1000", "--only-intra",
                 "-c", "GM18B_1,U2B_1,U8B_1",
                 "/Users/mshamim/Desktop/stitch/adj_mapq30/intact_survey_30.hic",
@@ -31,6 +39,7 @@ public class IJProcessing {
                 "/Users/mshamim/Desktop/stitch/adj_mapq0/intact_survey.hic"
         };
         //Tools.main(command);
+        */
 
     }
 }

@@ -38,13 +38,13 @@ public class ValidationTools {
 
 
         for (int c = 0; c < chromsArray1.length; c++) {
-            System.out.println(chromsArray1[c].getIndex() + " " + chromsArray1[c].getName() + " " + chromsArray1[c].getLength());
-            System.out.println(chromsArray2[c].getIndex() + " " + chromsArray2[c].getName() + " " + chromsArray2[c].getLength());
 
             if (chromsArray1[c].getIndex() != chromsArray2[c].getIndex()
                     || !(chromsArray1[c].getName().equals(chromsArray2[c].getName()))
                     || chromsArray1[c].getLength() != chromsArray2[c].getLength()) {
                 System.err.println("Chromosome mismatch");
+                System.out.println(chromsArray1[c].getIndex() + " " + chromsArray1[c].getName() + " " + chromsArray1[c].getLength());
+                System.out.println(chromsArray2[c].getIndex() + " " + chromsArray2[c].getName() + " " + chromsArray2[c].getLength());
                 System.exit(19);
             }
         }
@@ -56,7 +56,7 @@ public class ValidationTools {
         List<NormalizationType> norms2 = ds2.getNormalizationTypes();
 
         if (norms1.size() != norms2.size()) {
-            System.err.println("Number of norms mismatch");
+            System.err.println("Number of norms mismatch " + norms1.size() + "  -  " + norms2.size());
             System.exit(20);
         }
 
@@ -109,7 +109,7 @@ public class ValidationTools {
         List<NormalizationType> norms = ds1.getNormalizationTypes();
         List<HiCZoom> zooms = ds1.getBpZooms();
 
-        double magnitude = 0;
+        double magnitude = 0, errors = 0;
 
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
@@ -122,12 +122,14 @@ public class ValidationTools {
                         continue;
                     }
                     if (nv1.getData() == nv2.getData()) continue;
-                    magnitude += VectorTools.assertAreEqual(nv1.getData(), nv2.getData(), "Norm vector " +
+                    double[] errs = VectorTools.assertAreEqual(nv1.getData(), nv2.getData(), "Norm vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
+                    magnitude += errs[0];
+                    errors += errs[1];
                 }
             }
         }
-        System.out.println("Normalization vectors are equivalent (" + magnitude + ")");
+        System.out.println("Normalization vectors are equivalent (magnitude=" + magnitude + " : errors=" + errors + ")");
     }
 
     public static void validateExpectedVectors(Dataset ds1, Dataset ds2) {
@@ -136,7 +138,7 @@ public class ValidationTools {
         norms.add(NormalizationHandler.NONE);
         List<HiCZoom> zooms = ds1.getBpZooms();
 
-        double magnitude = 0;
+        double magnitude = 0, errors = 0;
         int counter = 0;
         for (Chromosome chrom : array) {
             for (NormalizationType norm : norms) {
@@ -149,13 +151,16 @@ public class ValidationTools {
                     ListOfDoubleArrays d2 = e2.getExpectedValuesWithNormalization(chrom.getIndex());
                     if (d1 == d2) continue;
 
-                    magnitude += VectorTools.assertAreEqual(d1, d2, "Expected vector " +
+                    double[] errs = VectorTools.assertAreEqual(d1, d2, "Expected vector " +
                             chrom.getName() + " " + norm.getLabel() + " " + zoom.getBinSize());
                     counter++;
+                    magnitude += errs[0];
+                    errors += errs[1];
                 }
             }
         }
-        System.out.println("Expected vectors are equivalent (" + magnitude + " : " + counter + ")");
+        System.out.println("Expected vectors are equivalent (magnitude=" + magnitude + " : counter=" + counter +
+                " : errors=" + errors + ")");
     }
 
     public static void validateRawCounts(Dataset ds1, Dataset ds2, int highestRes) {
