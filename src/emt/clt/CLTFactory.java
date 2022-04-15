@@ -42,7 +42,8 @@ public class CLTFactory {
         System.out.println("\t" + "-h, --help print help");
         System.out.println("\t" + "-v, --verbose verbose mode");
         System.out.println("\t" + "-V, --version print version");
-        System.out.println("Tools: excise, stitch, info/validate, equals");
+        System.out.println("Tools: excise, stitch, info, validate, equal, stats, graphs,\n" +
+                "compare-norms, row-sums, check-sparsity, bedpe-select");
         System.out.println("Type hic_emt <tool_name> for more detailed usage instructions");
     }
 
@@ -51,8 +52,6 @@ public class CLTFactory {
         cmd = cmd.toLowerCase();
         if (cmd.startsWith("stitch")) {
             return new Stitch();
-        } else if (cmd.startsWith("combine") || cmd.startsWith("add")) {
-            return new Addition();
         } else if (cmd.startsWith("excise")) {
             return new Excise();
         } else if (cmd.startsWith("info") || cmd.startsWith("validate")) {
@@ -69,6 +68,10 @@ public class CLTFactory {
             return new RowSums();
         } else if (cmd.startsWith("check-sparsity")) {
             return new CheckSparsity();
+        } else if (cmd.startsWith("bedpe-compare")) {
+            return new BedpeCompare();
+        } else if (cmd.startsWith("bedpe-select")) {
+            return new BedpeSelect();
         }
         return null;
     }
