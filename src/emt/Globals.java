@@ -29,6 +29,6 @@ package emt;
  * @since 11/25/14
  */
 public class Globals {
-    public static final String versionNum = "1.10.1";
+    public static final String versionNum = "1.10.2";
     public static boolean printVerboseComments = false;
 }
