@@ -49,7 +49,7 @@ public class CommandLineParser extends CmdLineParser {
     private final Option multipleChromosomesOption = addStringOption('c', "chromosomes");
     private final Option multipleResolutionsOption = addStringOption('r', "resolution");
     private final Option subsampleNumOption = addLongOption("subsample");
-    private final Option randomSeedOption = addStringOption("seed");
+    private final Option randomSeedOption = addLongOption("seed");
     private final Option normalizationTypeOption = addStringOption('k', "normalization");
 
     public CommandLineParser() {
