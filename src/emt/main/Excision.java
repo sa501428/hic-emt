@@ -25,8 +25,8 @@ public class Excision extends FileBuildingMethod {
     private final boolean onlyIntra;
 
     public Excision(Dataset dataset, ChromosomeHandler chromosomeHandler, int resolution, String path,
-                    boolean doSubsample, double ratio, boolean doCleanUp, long seed, boolean onlyIntra) {
-        super(resolution, path, dataset.getGenomeId(), doCleanUp, seed);
+                    boolean doSubsample, double ratio, boolean doCleanUp, long seed, boolean onlyIntra, String stem) {
+        super(resolution, path, dataset.getGenomeId(), doCleanUp, seed, stem);
         this.dataset = dataset;
         this.chromosomeHandler = chromosomeHandler;
         this.doSubsample = doSubsample;

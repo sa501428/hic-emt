@@ -24,8 +24,8 @@ public class Stitcher extends FileBuildingMethod {
 
 
     public Stitcher(String[] files, String[] stems, String[] regions, String normalization, boolean adjustOrigin,
-                    int resolution, String path, boolean doCleanUp, long seed) {
-        super(resolution, path, path + "/custom.chrom.sizes", doCleanUp, seed);
+                    int resolution, String path, boolean doCleanUp, long seed, String stem) {
+        super(resolution, path, path + "/custom.chrom.sizes", doCleanUp, seed, stem);
         this.files = files;
         this.stems = stems;
         this.regions = regions;

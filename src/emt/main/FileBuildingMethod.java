@@ -18,11 +18,12 @@ public abstract class FileBuildingMethod {
     protected final boolean doCleanUp;
     protected Random generator = new Random(0);
 
-    protected FileBuildingMethod(int resolution, String path, String cds, boolean doCleanUp, long seed) {
+    protected FileBuildingMethod(int resolution, String path, String cds, boolean doCleanUp,
+                                 long seed, String stem) {
         this.resolution = resolution;
         this.zoom = new HiCZoom(HiCZoom.HiCUnit.BP, resolution);
-        this.newMND = path + "/custom.mnd.txt";
-        this.newHiCFile = path + "/custom.hic";
+        this.newMND = path + "/" + stem + ".mnd.txt";
+        this.newHiCFile = path + "/" + stem + ".hic";
         this.newCDS = cds;
         this.doCleanUp = doCleanUp;
         this.generator.setSeed(seed);

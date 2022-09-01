@@ -12,7 +12,7 @@ import javastraw.tools.UNIXTools;
 public class Excise extends CLT {
 
     private int highestResolution = 1000;
-    private String file, folder;
+    private String file, folder, stem;
     private long numberOfReadsToSubsample = 0L;
     private double ratioToKeep = 1.0;
     private boolean doCleanUp = false;
@@ -21,17 +21,18 @@ public class Excise extends CLT {
 
     public Excise() {
         super("excise [-r resolution] [-c chromosomes] [--subsample num_contacts] " +
-                "[--cleanup] [--only-intra] <file> <out_folder>");
+                "[--cleanup] [--only-intra] <file> <out_folder> <stem>");
     }
 
     @Override
     protected void readAdditionalArguments(String[] args, CommandLineParser parser) {
-        if (args.length != 3) {
+        if (args.length != 4) {
             printUsageAndExit(6);
         }
 
         file = args[1];
         folder = args[2];
+        stem = args[3];
 
         Integer res = parser.getResolutionOption();
         if (res != null) {
@@ -65,7 +66,8 @@ public class Excise extends CLT {
         }
 
         FileBuildingMethod excision = new Excision(ds, chromosomeHandler, highestResolution, folder,
-                numberOfReadsToSubsample > 1, ratioToKeep, doCleanUp, seed, onlyIntra);
+                numberOfReadsToSubsample > 1, ratioToKeep, doCleanUp, seed, onlyIntra,
+                stem);
         FileBuildingMethod.tryToBuild(excision, onlyIntra);
     }
 }
