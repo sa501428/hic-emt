@@ -37,8 +37,7 @@ public class CheckSparsity extends CLT {
         List<HiCZoom> zooms = ds1.getBpZooms();
 
         for (Chromosome chrom : array) {
-            for (int q = 0; q < zooms.size(); q++) {
-                HiCZoom zoom = zooms.get(q);
+            for (HiCZoom zoom : zooms) {
                 System.out.println("Check " + chrom.getName() + " " + zoom.getBinSize());
                 SparsityCheck.getNonNanCounts(ds1, chrom, zoom);
             }
