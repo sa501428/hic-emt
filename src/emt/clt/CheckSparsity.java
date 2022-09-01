@@ -28,7 +28,7 @@ public class CheckSparsity extends CLT {
 
     @Override
     public void run() {
-        Dataset ds1 = HiCFileTools.extractDatasetForCLT(file1, true, false);
+        Dataset ds1 = HiCFileTools.extractDatasetForCLT(file1, false, false, false);
         assessSparsity(ds1);
     }
 

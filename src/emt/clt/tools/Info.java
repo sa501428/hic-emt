@@ -4,8 +4,8 @@ import emt.clt.CommandLineParser;
 import hic.HiCGlobals;
 import javastraw.reader.Dataset;
 import javastraw.reader.DatasetReader;
-import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
+import javastraw.reader.mzd.Matrix;
 import javastraw.reader.mzd.MatrixZoomData;
 import javastraw.reader.norm.NormalizationVector;
 import javastraw.reader.type.HiCZoom;
@@ -37,7 +37,7 @@ public class Info extends CLT {
     public void run() {
         try {
             DatasetReader reader = HiCFileTools.extractDatasetReaderForCLT(
-                    Arrays.asList(file.split("\\+")), true, false);
+                    Arrays.asList(file.split("\\+")), false, false, false);
             Dataset ds = reader.read();
             HiCGlobals.verifySupportedHiCFileVersion(reader.getVersion());
             if (ds.getGenomeId() == null) {
@@ -114,6 +114,7 @@ public class Info extends CLT {
                                 System.err.println("Warning: no reads in " +
                                         chrom1.getName() + "-" + chrom2.getName() + " at resolution " + zoom.getBinSize());
                             } else {
+                                /* todo
                                 try {
                                     reader.readNormalizedBlock(0, zd.getKey(), none, chrom1.getIndex(),
                                             chrom2.getIndex(), zoom);
@@ -122,6 +123,7 @@ public class Info extends CLT {
                                             getBlockDescription(chrom1, chrom2, zoom, none) +
                                             "\n" + e.getLocalizedMessage() + "\n");
                                 }
+                                */
                             }
                         }
                     }

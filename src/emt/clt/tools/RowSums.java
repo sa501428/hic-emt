@@ -50,7 +50,7 @@ public class RowSums extends CLT {
 
     @Override
     public void run() {
-        Dataset ds1 = HiCFileTools.extractDatasetForCLT(file1, true, false);
+        Dataset ds1 = HiCFileTools.extractDatasetForCLT(file1, false, false, false);
         calculateSums(ds1);
     }
 }

@@ -1,9 +1,9 @@
 package emt.main;
 
 import javastraw.reader.Dataset;
-import javastraw.reader.Matrix;
 import javastraw.reader.basics.Chromosome;
 import javastraw.reader.block.Block;
+import javastraw.reader.mzd.Matrix;
 import javastraw.reader.mzd.MatrixZoomData;
 import javastraw.reader.type.NormalizationType;
 import javastraw.tools.HiCFileTools;
@@ -16,9 +16,11 @@ import java.util.List;
 
 public class Stitcher extends FileBuildingMethod {
 
-    private String[] files, stems, regions;
-    private String normalization;
-    private boolean adjustOrigin;
+    private final String[] files;
+    private final String[] stems;
+    private final String[] regions;
+    private final String normalization;
+    private final boolean adjustOrigin;
 
 
     public Stitcher(String[] files, String[] stems, String[] regions, String normalization, boolean adjustOrigin,
@@ -37,7 +39,7 @@ public class Stitcher extends FileBuildingMethod {
         for (int s = 0; s < files.length; s++) {
             String file = files[s];
             String stem = stems[s];
-            Dataset ds = HiCFileTools.extractDatasetForCLT(file, true, false);
+            Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false, false);
             NormalizationType norm = ds.getNormalizationHandler().getNormTypeFromString(normalization);
             for (String region : regions) {
                 processRegion(region, ds, norm, stem, bwChromDotSizes, bwMND);

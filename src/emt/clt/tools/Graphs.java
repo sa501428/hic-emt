@@ -22,7 +22,7 @@ public class Graphs extends CLT {
 
     @Override
     public void run() {
-        Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false);
+        Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false, false);
         System.out.println(ds.getGraphs());
     }
 }

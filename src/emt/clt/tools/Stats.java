@@ -24,7 +24,7 @@ public class Stats extends CLT {
     @Override
     public void run() {
 
-        Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false);
+        Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false, false);
         System.out.println(ds.getStatistics());
     }
 }

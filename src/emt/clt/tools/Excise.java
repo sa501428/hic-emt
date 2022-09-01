@@ -52,7 +52,7 @@ public class Excise extends CLT {
 
         UNIXTools.makeDir(folder);
 
-        Dataset ds = HiCFileTools.extractDatasetForCLT(file, true, false);
+        Dataset ds = HiCFileTools.extractDatasetForCLT(file, false, false, false);
         ChromosomeHandler chromosomeHandler = ds.getChromosomeHandler();
         if (givenChromosomes != null)
             chromosomeHandler = HiCFileTools.stringToChromosomes(givenChromosomes, chromosomeHandler);
