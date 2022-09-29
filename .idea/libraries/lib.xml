@@ -2,7 +2,7 @@
   <library name="lib">
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/lib/jargs.jar!/" />
-      <root url="jar://$PROJECT_DIR$/lib/java-straw.2.19.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/java-straw.2.21.00.jar!/" />
       <root url="jar://$PROJECT_DIR$/lib/hic_tools.3.7.2.jar!/" />
     </CLASSES>
     <JAVADOC />
