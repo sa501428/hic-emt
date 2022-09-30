@@ -12,6 +12,8 @@ import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Iterator;
 
 public class Excision extends FileBuildingMethod {
@@ -38,10 +40,14 @@ public class Excision extends FileBuildingMethod {
 
     public void buildTempFiles() throws IOException {
         if (useCustomCDS) {
-            writeOutCustomCDS();
+            try {
+                writeOutCustomCDS();
+            } catch (Exception e) {
+                System.err.println("Unable to save chrom.sizes from .hic file: " + e.getMessage());
+            }
         }
 
-        BufferedWriter bwMND = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(newMND)));
+        BufferedWriter bwMND = new BufferedWriter(new OutputStreamWriter(Files.newOutputStream(Paths.get(newMND))));
         Chromosome[] chromosomes = chromosomeHandler.getChromosomeArrayWithoutAllByAll();
         for (int i = 0; i < chromosomes.length; i++) {
             for (int j = i; j < chromosomes.length; j++) {
