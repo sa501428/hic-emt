@@ -1,7 +1,6 @@
 package emt.clt.tools;
 
 import emt.clt.CommandLineParser;
-import hic.HiCGlobals;
 import javastraw.reader.Dataset;
 import javastraw.reader.DatasetReader;
 import javastraw.reader.basics.Chromosome;
@@ -39,7 +38,6 @@ public class Info extends CLT {
             DatasetReader reader = HiCFileTools.extractDatasetReaderForCLT(
                     Arrays.asList(file.split("\\+")), false, false, false);
             Dataset ds = reader.read();
-            HiCGlobals.verifySupportedHiCFileVersion(reader.getVersion());
             if (ds.getGenomeId() == null) {
                 System.err.println("Null genome ID");
                 System.exit(12);

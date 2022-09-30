@@ -5,7 +5,6 @@
       <element id="module-output" name="hic-emt" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/jargs.jar" path-in-jar="/" />
       <element id="extracted-dir" path="$PROJECT_DIR$/lib/java-straw.2.21.00.jar" path-in-jar="/" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/lib/hic_tools.3.7.2.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

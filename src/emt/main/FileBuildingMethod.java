@@ -1,6 +1,5 @@
 package emt.main;
 
-import hic.tools.HiCTools;
 import jargs.gnu.CmdLineParser;
 import javastraw.reader.type.HiCZoom;
 
@@ -44,12 +43,11 @@ public abstract class FileBuildingMethod {
 
     public void buildNewHiCFile(boolean onlyDiagNoNorms) throws CmdLineParser.UnknownOptionException, CmdLineParser.IllegalOptionValueException {
         String resolutionsToBuild = Utils.getResolutionsToBuild(resolution);
-        String[] line = new String[]{"pre", "-r", resolutionsToBuild, newMND, newHiCFile, newCDS};
+        String line = "pre -n -r " + resolutionsToBuild + " " + newMND + " " + newHiCFile + " " + newCDS;
         if (onlyDiagNoNorms) {
-            line = new String[]{"pre", "-d", "-n", "-r", resolutionsToBuild,
-                    newMND, newHiCFile, newCDS};
+            line = "pre -d -n -r " + resolutionsToBuild + " " + newMND + " " + newHiCFile + " " + newCDS;
         }
-        HiCTools.main(line);
+        System.out.println("To build the .hic file, run:\n" + line);
     }
 
     public static void tryToBuild(FileBuildingMethod method, boolean onlyDiagNoNorms) {
